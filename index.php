@@ -81,7 +81,7 @@
             message.style.opacity = "0";
             setTimeout(() => message.style.display = "none", 1000);
         });
-    }, 5000);
+    }, 3000);
 </script>
 
 </html>

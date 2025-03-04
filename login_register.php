@@ -6,7 +6,6 @@ if ($conn->connect_error) {
     die("Connectiefout: " . $conn->connect_error);
 }
 
-
 if (isset($_POST['register'])) {
     $name = trim($_POST['name']);
     $email = trim($_POST['email']);
@@ -25,7 +24,6 @@ if (isset($_POST['register'])) {
         exit();
     }
 
-    // Controleer of naam of e-mail al bestaat
     $check_user = $conn->prepare("SELECT id FROM users WHERE email = ? OR name = ?");
     $check_user->bind_param("ss", $email, $name);
     $check_user->execute();
@@ -37,7 +35,6 @@ if (isset($_POST['register'])) {
         exit();
     }
 
-    // Wachtwoord hash maken en gebruiker opslaan
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
     $stmt = $conn->prepare("INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)");
     $stmt->bind_param("ssss", $name, $email, $hashed_password, $role);
@@ -53,12 +50,11 @@ if (isset($_POST['register'])) {
     exit();
 }
 
-// **Inloggen**
 if (isset($_POST['login'])) {
     $email = trim($_POST['email']);
     $password = $_POST['password'];
 
-    $stmt = $conn->prepare("SELECT id, password, role FROM users WHERE email = ?");
+    $stmt = $conn->prepare("SELECT id, name, password, role FROM users WHERE email = ?");
     $stmt->bind_param("s", $email);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -66,13 +62,16 @@ if (isset($_POST['login'])) {
 
     if ($user && password_verify($password, $user['password'])) {
         $_SESSION['user_id'] = $user['id'];
+        $_SESSION['user_name'] = $user['name'];
         $_SESSION['role'] = $user['role'];
+
 
         if ($user['role'] == 'Admin') {
             header("Location: admin.php");
         } else {
             header("Location: user.php");
         }
+        exit();
     } else {
         $_SESSION['error'] = "Ongeldig e-mailadres of wachtwoord!";
         header("Location: index.php");
@@ -81,6 +80,8 @@ if (isset($_POST['login'])) {
     $stmt->close();
     exit();
 }
+
+
 
 $conn->close();
 ?>
