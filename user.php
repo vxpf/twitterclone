@@ -9,10 +9,10 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 'Admin') {
 <html lang="nl">
 <head>
     <meta charset="UTF-8">
-    <title>Admin Dashboard</title>
+    <title>Chirpify</title>
 </head>
 <body>
-<h1>Welkom, Admin!</h1>
+<h1>Welkom, Gebruiker!</h1>
 <a href="index.php">Uitloggen</a>
 </body>
 </html>
