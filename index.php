@@ -73,7 +73,7 @@
 <script src="script.js"></script>
 </body>
 <script>
-    // Meldingen verdwijnen na 5 seconden
+
     setTimeout(function() {
         let messages = document.querySelectorAll('.error, .success');
         messages.forEach(function(message) {

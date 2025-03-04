@@ -6,7 +6,7 @@ if ($conn->connect_error) {
     die("Connectiefout: " . $conn->connect_error);
 }
 
-// **Registreren**
+
 if (isset($_POST['register'])) {
     $name = trim($_POST['name']);
     $email = trim($_POST['email']);
