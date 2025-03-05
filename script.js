@@ -54,3 +54,23 @@ function verwijderBericht(index) {
     berichten.splice(index, 1); 
     toonBerichten(); 
 }
+
+function toggleMenu() {
+    var menu = document.getElementById("menu");
+    if (menu.style.display === "block") {
+        menu.style.display = "none";
+    } else {
+        menu.style.display = "block";
+    }
+}
+
+function postBericht() {
+    var bericht = document.getElementById("berichtInput").value;
+    if (bericht.trim() !== "") {
+        var berichtenLijst = document.getElementById("berichtenLijst");
+        var nieuwBericht = document.createElement("p");
+        nieuwBericht.textContent = bericht;
+        berichtenLijst.appendChild(nieuwBericht);
+        document.getElementById("berichtInput").value = "";
+    }
+}
