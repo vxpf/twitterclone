@@ -18,6 +18,12 @@ $user_name = htmlspecialchars($_SESSION['user_name']);
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<div class="container">
+        <h1>Mijn Twitter</h1>
+        <textarea id="berichtInput" placeholder="Schrijf je bericht..."></textarea>
+        <button onclick="postBericht()">Post Bericht</button>
+        <div id="berichtenLijst"></div>
+    </div>
 
 <div class="container">
     <h2>Welkom, <?php echo $user_name; ?>!</h2>
@@ -26,4 +32,5 @@ $user_name = htmlspecialchars($_SESSION['user_name']);
 </div>
 
 </body>
+<script src="script.js"></script>
 </html>
