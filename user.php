@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chirpify</title>
-    <link rel="stylesheet" href="style.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -119,7 +118,7 @@
         }
 
         /* Container voor de chatbox en inhoud */
-        .container {
+        .container1 {
             padding: 20px;
             margin-top: 20px; /* Zorgt voor ruimte boven de inhoud */
         }
@@ -138,7 +137,7 @@
     </div>
 
     <!-- Chatbox en inhoud -->
-    <div class="container">
+    <div class="container1">
         <h1>Mijn Twitter</h1>
         <textarea id="berichtInput" placeholder="Schrijf je bericht..."></textarea>
         <button onclick="postBericht()">Post Bericht</button>
