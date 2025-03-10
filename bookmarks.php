@@ -3,19 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chirpify - Feed</title>
+    <title>Chirpify - Bookmarks</title>
     <link rel="stylesheet" href="user.css">
 </head>
 <body>
     <div class="twitter-container">
-      
         <aside class="sidebar">
             <div class="logo">
                 <h2>Chirpify</h2>
             </div>
             <nav class="sidebar-nav">
-                <a href="user.php" class="nav-item active">Home</a>
-                <a href="bookmarks.php" class="nav-item">Bookmarks</a>
+                <a href="user.php" class="nav-item">Home</a>
+                <a href="bookmarks.php" class="nav-item active">Bookmarks</a>
                 <a href="messages.php" class="nav-item">Messages</a>
                 <a href="profile.php" class="nav-item">Profile</a>
                 <a href="index.php" class="nav-item">Logout</a>
@@ -23,15 +22,10 @@
             <button class="tweet-btn">Tweet</button>
         </aside>
 
-        
         <main class="feed">
             <header class="feed-header">
-                <h1>Home</h1>
+                <h1>Bookmarks</h1>
             </header>
-            <div class="tweet-box">
-                <textarea placeholder="What's happening?"></textarea>
-                <button class="post-btn">Tweet</button>
-            </div>
             <div class="tweets">
                 <div class="tweet">
                     <div class="tweet-avatar">
@@ -42,7 +36,7 @@
                             <span class="username">John Doe</span>
                             <span class="handle">@johndoe · 1h</span>
                         </div>
-                        <p>This is a sample tweet. Loving the new Chirpify platform!</p>
+                        <p>This is a bookmarked tweet. Loving the new Chirpify platform!</p>
                         <div class="tweet-actions">
                             <span>Reply</span>
                             <span>Retweet</span>
@@ -59,7 +53,7 @@
                             <span class="username">Jane Smith</span>
                             <span class="handle">@janesmith · 3h</span>
                         </div>
-                        <p>Just saw an amazing sunset. #Chirpify #Nature</p>
+                        <p>Bookmarked this amazing sunset tweet. #Chirpify #Nature</p>
                         <div class="tweet-actions">
                             <span>Reply</span>
                             <span>Retweet</span>
@@ -67,7 +61,6 @@
                         </div>
                     </div>
                 </div>
-               
             </div>
         </main>
     </div>

@@ -93,6 +93,7 @@ body {
 .feed-header h1 {
   font-size: 20px;
   font-weight: bold;
+  margin-top: 20px;
 }
 
 .tweet-box {
@@ -178,4 +179,168 @@ body {
 .tweet-actions span:hover {
   color: #1da1f2;
   cursor: pointer;
+}
+
+.profile-main {
+  padding: 0;
+}
+
+.profile-header {
+  position: relative;
+  border-bottom: 1px solid #e1e8ed;
+}
+
+.profile-banner img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.profile-info {
+  padding: 20px;
+  position: relative;
+}
+
+.profile-avatar {
+  position: absolute;
+  top: -50px;
+  left: 20px;
+}
+
+.profile-avatar img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 3px solid white;
+}
+
+.edit-profile-btn {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  padding: 8px 16px;
+  background: none;
+  border: 1px solid #1da1f2;
+  color: #1da1f2;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.profile-details {
+  margin-top: 60px;
+}
+
+.profile-name {
+  margin: 0;
+  font-size: 20px;
+}
+
+.profile-handle {
+  color: #657786;
+  display: block;
+  margin: 5px 0;
+}
+
+.profile-bio {
+  margin: 10px 0;
+}
+
+.profile-meta span {
+  margin-right: 20px;
+  color: #657786;
+}
+
+.profile-edit-form {
+  padding: 20px;
+  border-bottom: 1px solid #e1e8ed;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #e1e8ed;
+  border-radius: 4px;
+}
+
+.save-profile-btn {
+  background: #1da1f2;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.cancel-edit-btn {
+  background: none;
+  border: 1px solid #1da1f2;
+  color: #1da1f2;
+  padding: 8px 16px;
+  border-radius: 20px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.messages-container {
+  padding: 10px 0;
+}
+
+.message-thread {
+  margin-bottom: 20px;
+}
+
+.message {
+  display: flex;
+  padding: 10px 0;
+  border-bottom: 1px solid #e6ecf0;
+}
+
+.message-content {
+  flex: 1;
+}
+
+.message.own-message {
+  justify-content: flex-end;
+}
+
+.message.own-message .message-content {
+  text-align: right;
+}
+
+.message.own-message p {
+  background-color: #1da1f2;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 15px;
+  display: inline-block;
+  max-width: 70%;
+}
+
+.message-input {
+  padding: 10px 0;
+  border-top: 1px solid #e6ecf0;
+  display: flex;
+  align-items: center;
+}
+
+.message-input textarea {
+  flex: 1;
+  border: none;
+  resize: none;
+  font-size: 16px;
+  padding: 10px;
+  outline: none;
+  background-color: #f5f8fa;
+  border-radius: 10px;
+  margin-right: 10px;
 }
