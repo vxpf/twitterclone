@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $name = isset($_POST['name']) ? trim($_POST['name']) : '';
         $role = isset($_POST['role']) ? $_POST['role'] : '';
 
-        if (!$name || !$email || !$password || !in_array($role, ['User', 'Admin'])) {
+        if (!$name || !$email || !$password || !in_array($role, ['User', 'Admin', 'Guest'])) {
             $_SESSION['error'] = "Ongeldige invoer!";
         } else {
             $stmt = $conn->prepare("SELECT id FROM users WHERE email = ? OR name = ?");
@@ -28,7 +28,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_SESSION['error'] = "Naam of e-mail in gebruik!";
             } else {
                 $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-                $stmt = $conn->prepare("INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)");
+
+                // Gebruiker toevoegen met standaardwaarden
+                $stmt = $conn->prepare("
+                    INSERT INTO users (name, email, password, role, followers_count, following_count, bio, profile_picture, banner) 
+                    VALUES (?, ?, ?, ?, 0, 0, '', 'default-avatar.jpg', 'default-banner.jpg')
+                ");
                 $stmt->execute([$name, $email, $hashed_password, $role]);
                 $_SESSION['success'] = "Registratie succesvol!";
             }
@@ -36,7 +41,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if (isset($_POST['login'])) {
-        $stmt = $conn->prepare("SELECT id, name, password, role FROM users WHERE email = ?");
+        $stmt = $conn->prepare("
+            SELECT id, name, password, role, followers_count, following_count, bio, profile_picture, banner 
+            FROM users WHERE email = ?
+        ");
         $stmt->execute([$email]);
         $user = $stmt->fetch();
 
@@ -44,7 +52,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION = [
                 'user_id' => $user['id'],
                 'user_name' => $user['name'],
-                'role' => $user['role']
+                'role' => $user['role'],
+                'followers_count' => $user['followers_count'],
+                'following_count' => $user['following_count'],
+                'bio' => $user['bio'],
+                'profile_picture' => $user['profile_picture'],
+                'banner' => $user['banner']
             ];
             header("Location: " . ($user['role'] === 'Admin' ? "admin.php" : "user.php"));
             exit();
