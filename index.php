@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login / Registreer</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="index.css">
 </head>
 <style>
     .error, .success {
@@ -63,6 +63,7 @@
                 <option value="">--Selecteer rol--</option>
                 <option value="User">User</option>
                 <option value="Admin">Admin</option>
+                <option value="Guest">Guest</option>
             </select>
             <button type="submit" name="register">Registreer</button>
             <p>Heb je al een account? <a href="#" onclick="showForm('login-form')">Login</a></p>
