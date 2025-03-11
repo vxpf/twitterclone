@@ -1,12 +1,13 @@
+/* Algemene stijlen */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: Arial, sans-serif;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
-  background-color: #f5f8fa;
+  background-color: #eaeff3;
   color: #14171a;
   line-height: 1.5;
 }
@@ -15,37 +16,45 @@ body {
   display: flex;
   max-width: 1200px;
   margin: 0 auto;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
 }
 
-/* Sidebar Styles */
+/* Sidebar */
 .sidebar {
-  width: 250px;
+  width: 280px;
   padding: 20px;
   position: fixed;
   height: 100vh;
   border-right: 1px solid #e6ecf0;
+  background-color: #ffffff;
 }
 
 .logo h2 {
-  font-size: 24px;
+  font-size: 26px;
   font-weight: bold;
   color: #1da1f2;
-  margin-bottom: 20px;
-  
+  margin: 0 0 20px;
+  text-align: center;
 }
 
 .sidebar-nav {
   display: flex;
   flex-direction: column;
+  gap: 15px;
 }
 
 .nav-item {
-  padding: 10px 15px;
-  font-size: 18px;
+  padding: 12px 20px;
+  font-size: 16px;
+  font-weight: 600;
   color: #14171a;
   text-decoration: none;
   border-radius: 25px;
-  margin-bottom: 10px;
+  text-align: left;
+  transition: background-color 0.3s, color 0.3s;
 }
 
 .nav-item:hover {
@@ -54,36 +63,40 @@ body {
 }
 
 .nav-item.active {
-  font-weight: bold;
-  color: #1da1f2;
+  background-color: #1da1f2;
+  color: white;
 }
 
 .tweet-btn {
   background-color: #1da1f2;
   color: white;
   border: none;
-  padding: 12px 20px;
+  padding: 12px 25px;
   border-radius: 25px;
   font-size: 16px;
   cursor: pointer;
-  margin-top: 20px;
-  width: 100%;
+  margin-top: 30px;
+  text-align: center;
+  transition: background-color 0.3s;
 }
 
 .tweet-btn:hover {
   background-color: #1a91da;
 }
 
-/* Feed Styles */
+/* Feed Layout */
 .feed {
-  margin-left: 270px;
-  width: 600px;
+  margin-left: 310px;
+  width: 100%;
+  max-width: 700px;
   padding: 20px;
+  background-color: #ffffff;
+  min-height: 100vh;
 }
 
 .feed-header {
-  border-bottom: 1px solid #e6ecf0;
-  padding-bottom: 10px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #e6ecf0;
   position: sticky;
   top: 0;
   background-color: #fff;
@@ -91,25 +104,32 @@ body {
 }
 
 .feed-header h1 {
-  font-size: 20px;
+  font-size: 24px;
   font-weight: bold;
-  margin-top: 20px;
+  text-align: center;
+  color: #14171a;
 }
 
-.tweet-box {
-  padding: 10px 0;
-  border-bottom: 1px solid #e6ecf0;
+/* Zoekbalk */
+.search-bar {
+  margin: 20px 0;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  align-items: center;
 }
 
-.tweet-box textarea {
-  width: 100%;
-  border: none;
-  resize: none;
-  font-size: 16px;
-  padding: 10px;
-  outline: none;
+.search-bar input {
+  width: 70%;
+  max-width: 600px;
+  padding: 12px 20px;
+  border-radius: 30px;
+  border: 1px solid #e6ecf0;
+  font-size: 14px;
+  color: #333;
   background-color: #f5f8fa;
-  border-radius: 10px;
+  outline: none;
+  transition: border-color 0.3s;
 }
 
 .post-btn {
@@ -124,26 +144,101 @@ body {
   border: none;
 }
 
+.search-bar button:hover {
+  background-color: #1a91da;
+}
+
+/* Zoekresultaten */
+.search-results {
+  margin-top: 20px;
+  padding: 10px 20px;
+}
+
+.search-result {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 10px 0;
+  border-bottom: 1px solid #e6ecf0;
+}
+
+.search-result img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.search-result span {
+  font-size: 16px;
+  font-weight: bold;
+  color: #14171a;
+}
+
+/* Tweet Box */
+.tweet-box {
+  margin: 20px 0;
+  padding: 15px 20px;
+  background-color: #f5f8fa;
+  border-radius: 15px;
+  border: 1px solid #e6ecf0;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+textarea {
+  width: 100%;
+  resize: none;
+  padding: 10px 15px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #ffffff;
+  color: #333;
+  outline: none;
+  margin-bottom: 10px;
+}
+
+.post-btn {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 16px;
+  color: white;
+  background-color: #1da1f2;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
 .post-btn:hover {
   background-color: #1a91da;
 }
 
-/* Tweet Styles */
+/* Tweets */
 .tweets {
   margin-top: 10px;
 }
 
 .tweet {
+  background-color: #ffffff;
+  border: 1px solid #e6ecf0;
+  border-radius: 15px;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
   display: flex;
-  padding: 15px 0;
-  border-bottom: 1px solid #e6ecf0;
+  padding: 15px;
+  margin-bottom: 15px;
+  transition: transform 0.3s ease;
+}
+
+.tweet:hover {
+  transform: translateY(-3px);
 }
 
 .tweet-avatar img {
-  width: 50px;
-  height: 50px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
-  margin-right: 10px;
+  margin-right: 15px;
 }
 
 .tweet-content {
@@ -153,186 +248,66 @@ body {
 .tweet-header {
   display: flex;
   align-items: center;
+  margin-bottom: 8px;
 }
 
 .username {
   font-weight: bold;
-  margin-right: 5px;
+  color: #14171a;
 }
 
 .handle {
   color: #657786;
   font-size: 14px;
+  margin-left: 10px;
 }
 
 .tweet-content p {
-  margin: 5px 0;
+  margin-top: 8px;
+  margin-bottom: 12px;
+  color: #333;
+  line-height: 1.4;
 }
 
 .tweet-actions {
   display: flex;
-  justify-content: space-between;
-  color: #657786;
-  font-size: 14px;
-  margin-top: 10px;
-  max-width: 200px;
+  gap: 15px;
 }
 
-.tweet-actions span:hover {
-  color: #1da1f2;
-  cursor: pointer;
-}
-
-.profile-main {
-  padding: 0;
-}
-
-.profile-header {
-  position: relative;
-  border-bottom: 1px solid #e1e8ed;
-}
-
-.profile-banner img {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-}
-
-.profile-info {
-  padding: 20px;
-  position: relative;
-}
-
-.profile-avatar {
-  position: absolute;
-  top: -50px;
-  left: 20px;
-}
-
-.profile-avatar img {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  border: 3px solid white;
-}
-
-.edit-profile-btn {
-  position: absolute;
-  right: 20px;
-  top: 20px;
-  padding: 8px 16px;
-  background: none;
-  border: 1px solid #1da1f2;
-  color: #1da1f2;
-  border-radius: 20px;
-  cursor: pointer;
-}
-
-.profile-details {
-  margin-top: 60px;
-}
-
-.profile-name {
-  margin: 0;
-  font-size: 20px;
-}
-
-.profile-handle {
-  color: #657786;
-  display: block;
-  margin: 5px 0;
-}
-
-.profile-bio {
-  margin: 10px 0;
-}
-
-.profile-meta span {
-  margin-right: 20px;
-  color: #657786;
-}
-
-.profile-edit-form {
-  padding: 20px;
-  border-bottom: 1px solid #e1e8ed;
-}
-
-.form-group {
-  margin-bottom: 15px;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 5px;
-}
-
-.form-group input,
-.form-group textarea {
-  width: 100%;
-  padding: 8px;
-  border: 1px solid #e1e8ed;
-  border-radius: 4px;
-}
-
-.save-profile-btn {
-  background: #1da1f2;
-  color: white;
+.tweet-actions button {
+  display: inline-block;
+  padding: 8px 20px;
+  border-radius: 25px;
+  background-color: #e1e8ed;
   border: none;
-  padding: 8px 16px;
-  border-radius: 20px;
+  color: #657786;
   cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  transition: all 0.3s;
 }
 
-.cancel-edit-btn {
-  background: none;
-  border: 1px solid #1da1f2;
-  color: #1da1f2;
-  padding: 8px 16px;
-  border-radius: 20px;
-  margin-left: 10px;
-  cursor: pointer;
-}
-
-.messages-container {
-  padding: 10px 0;
-}
-
-.message-thread {
-  margin-bottom: 20px;
-}
-
-.message {
-  display: flex;
-  padding: 10px 0;
-  border-bottom: 1px solid #e6ecf0;
-}
-
-.message-content {
-  flex: 1;
-}
-
-.message.own-message {
-  justify-content: flex-end;
-}
-
-.message.own-message .message-content {
-  text-align: right;
-}
-
-.message.own-message p {
+.tweet-actions button:hover {
   background-color: #1da1f2;
   color: white;
-  padding: 8px 12px;
-  border-radius: 15px;
-  display: inline-block;
-  max-width: 70%;
 }
 
-.message-input {
-  padding: 10px 0;
-  border-top: 1px solid #e6ecf0;
-  display: flex;
-  align-items: center;
+.tweet-actions .retweet-btn {
+  background-color: #17bf63;
+  color: white;
+}
+
+.tweet-actions .retweet-btn:hover {
+  background-color: #15a556;
+}
+
+.tweet-actions .like-btn {
+  background-color: #e0245e;
+  color: white;
+}
+
+.tweet-actions .like-btn:hover {
+  background-color: #c61748;
 }
 
 .message-input textarea {
