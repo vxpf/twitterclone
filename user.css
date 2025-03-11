@@ -210,7 +210,7 @@ textarea {
   transition: background-color 0.3s;
 }
 
-.post-btn:hover {
+.search-bar button:hover {
   background-color: #1a91da;
 }
 
