@@ -17,6 +17,7 @@
                 <a href="bookmarks.php" class="nav-item active">Bookmarks</a>
                 <a href="messages.php" class="nav-item">Messages</a>
                 <a href="profile.php" class="nav-item">Profile</a>
+                <a href="Settings.php" class="nav-item">Settings</a>
                 <a href="index.php" class="nav-item">Logout</a>
             </nav>
             <button class="tweet-btn">Tweet</button>

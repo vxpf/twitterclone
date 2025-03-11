@@ -113,13 +113,15 @@ body {
 }
 
 .post-btn {
-  background-color: #1da1f2;
-  color: white;
-  border: none;
-  padding: 8px 15px;
-  border-radius: 20px;
-  float: right;
+  display: inline-block;
+  text-decoration: none;
+  text-align: center;
+  padding: 10px 20px;
   cursor: pointer;
+  color: #fff;
+  background-color: #1da1f2;
+  border-radius: 9999px;
+  border: none;
 }
 
 .post-btn:hover {
@@ -343,4 +345,71 @@ body {
   background-color: #f5f8fa;
   border-radius: 10px;
   margin-right: 10px;
+}
+
+
+
+body[data-theme="dark"] {
+  background-color: #15202b;
+  color: #ffffff;
+}
+
+body[data-theme="dark"] .twitter-container {
+  color: #ffffff;
+}
+
+body[data-theme="dark"] .sidebar {
+  border-right: 1px solid #38444d;
+}
+
+body[data-theme="dark"] .logo h2 {
+  color: #1da1f2;
+}
+
+body[data-theme="dark"] .nav-item {
+  color: #ffffff;
+}
+
+body[data-theme="dark"] .nav-item:hover {
+  background-color: #1e2a38;
+  color: #1da1f2;
+}
+
+body[data-theme="dark"] .tweet-btn {
+  background-color: #1da1f2;
+}
+
+body[data-theme="dark"] .tweet-btn:hover {
+  background-color: #1a91da;
+}
+
+body[data-theme="dark"] .feed {
+  background-color: #15202b;
+}
+
+body[data-theme="dark"] .feed-header {
+  background-color: #15202b;
+  border-bottom: 1px solid #38444d;
+}
+
+body[data-theme="dark"] .tweet-box textarea {
+  background-color: #1e2a38;
+  color: #ffffff;
+}
+
+body[data-theme="dark"] .profile-edit-form {
+  border-bottom: 1px solid #38444d;
+}
+
+body[data-theme="dark"] .form-group input,
+body[data-theme="dark"] .form-group textarea {
+  background-color: #1e2a38;
+  color: #ffffff;
+  border: 1px solid #38444d;
+}
+
+body[data-theme="dark"] .form-group select {
+  background-color: #1e2a38;
+  color: #ffffff;
+  border: 1px solid #38444d;
 }
