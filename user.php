@@ -57,18 +57,7 @@ $tweets = $stmt->fetchAll();
 
     <!-- Main Feed Section -->
     <main class="feed">
-
-        <!-- Feedback Berichten -->
-        <?php if (isset($_SESSION['success'])): ?>
-            <div class="message success">
-                <?php echo $_SESSION['success']; unset($_SESSION['success']); ?>
-            </div>
-        <?php elseif (isset($_SESSION['error'])): ?>
-            <div class="message error">
-                <?php echo $_SESSION['error']; unset($_SESSION['error']); ?>
-            </div>
-        <?php endif; ?>
-
+        <!-- Titel van de Feed -->
         <header class="feed-header">
             <h1>Home</h1>
         </header>
@@ -86,16 +75,20 @@ $tweets = $stmt->fetchAll();
             <?php if (!empty($tweets)): ?>
                 <?php foreach ($tweets as $tweet): ?>
                     <div class="tweet">
+                        <!-- Gebruikersavatar -->
                         <div class="tweet-avatar">
                             <img src="<?php echo htmlspecialchars($tweet['profile_picture']); ?>" alt="User Avatar">
                         </div>
                         <div class="tweet-content">
+                            <!-- Tweet Header -->
                             <div class="tweet-header">
                                 <span class="username"><?php echo htmlspecialchars($tweet['name']); ?></span>
                                 <span class="handle">@<?php echo htmlspecialchars($tweet['user_id']); ?></span>
                                 <span class="time">• <?php echo date("H:i", strtotime($tweet['created_at'])); ?></span>
                             </div>
+                            <!-- Tweet Tekst -->
                             <p><?php echo htmlspecialchars($tweet['content']); ?></p>
+                            <!-- Tweet Acties -->
                             <div class="tweet-actions">
                                 <!-- Like Formulier -->
                                 <form action="like_tweet.php" method="POST" style="display: inline-block;">
@@ -110,7 +103,6 @@ $tweets = $stmt->fetchAll();
                                         <?php echo $isLiked ? "💔 Unlike" : "❤️ Like"; ?> (<?php echo (int)$tweet['likes_count']; ?>)
                                     </button>
                                 </form>
-
                                 <!-- Retweet Formulier -->
                                 <form action="retweet_tweet.php" method="POST" style="display: inline-block;">
                                     <input type="hidden" name="tweet_id" value="<?php echo htmlspecialchars($tweet['tweet_id']); ?>">
@@ -124,14 +116,23 @@ $tweets = $stmt->fetchAll();
                                         <?php echo $isRetweeted ? "⛔ Unretweet" : "🔁 Retweet"; ?> (<?php echo (int)$tweet['retweets_count']; ?>)
                                     </button>
                                 </form>
+                                <!-- Verwijder Tweet Formulier (alleen als eigenaar) -->
+                                <?php if ($_SESSION['user_id'] === $tweet['user_id']): ?>
+                                    <form action="delete_tweet.php" method="POST" style="display: inline-block;">
+                                        <input type="hidden" name="tweet_id" value="<?php echo htmlspecialchars($tweet['tweet_id']); ?>">
+                                        <button type="submit" class="delete-btn">
+                                            ❌ Delete
+                                        </button>
+                                    </form>
+                                <?php endif; ?>
                             </div>
                         </div>
                     </div>
                 <?php endforeach; ?>
             <?php else: ?>
+                <!-- Geen Tweets -->
                 <p>Geen tweets gevonden.</p>
             <?php endif; ?>
-
         </div>
     </main>
 </div>

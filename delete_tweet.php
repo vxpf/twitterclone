@@ -8,8 +8,7 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 // Controleer of tweet_id is meegestuurd
-if (!isset($_POST['tweet_id'])) {
-    $_SESSION['error'] = "Ongeldig verzoek.";
+if (!isset($_POST['tweet_id']) || empty($_POST['tweet_id'])) {
     header('Location: user.php');
     exit();
 }
@@ -24,21 +23,21 @@ try {
     die("Connectiefout: " . $e->getMessage());
 }
 
-$tweet_id = $_POST['tweet_id'];
-$user_id = $_SESSION['user_id'];
+$tweet_id = (int) $_POST['tweet_id']; // Maak zeker dat tweet_id een integer is
+$user_id = (int) $_SESSION['user_id']; // Zorg dat user_id een integer is
 
 // Verifieer of de tweet van de ingelogde gebruiker is
-$stmt = $conn->prepare("SELECT user_id FROM tweets WHERE id = :tweet_id");
-$stmt->execute(['tweet_id' => $tweet_id]);
+$stmt = $conn->prepare("SELECT id FROM tweets WHERE id = :tweet_id AND user_id = :user_id");
+$stmt->execute(['tweet_id' => $tweet_id, 'user_id' => $user_id]);
 $tweet = $stmt->fetch();
 
-if ($tweet && $tweet['user_id'] === $user_id) {
-    // Voer delete uit
-    $deleteStmt = $conn->prepare("DELETE FROM tweets WHERE id = :tweet_id");
-    $deleteStmt->execute(['tweet_id' => $tweet_id]);
-    $_SESSION['success'] = "Tweet succesvol verwijderd.";
-} else {
-    $_SESSION['error'] = "Je kunt alleen je eigen tweets verwijderen.";
+if ($tweet) {
+    // Verwijder likes en retweets gekoppeld aan de tweet
+    $conn->prepare("DELETE FROM likes WHERE tweet_id = :tweet_id")->execute(['tweet_id' => $tweet_id]);
+    $conn->prepare("DELETE FROM retweets WHERE tweet_id = :tweet_id")->execute(['tweet_id' => $tweet_id]);
+
+    // Verwijder de tweet zelf
+    $conn->prepare("DELETE FROM tweets WHERE id = :tweet_id")->execute(['tweet_id' => $tweet_id]);
 }
 
 header('Location: user.php');

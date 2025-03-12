@@ -6,6 +6,7 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
+// Database connectie
 try {
     $conn = new PDO("mysql:host=localhost;dbname=login_system", "root", "", [
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
@@ -15,17 +16,17 @@ try {
     die("Connectiefout: " . $e->getMessage());
 }
 
-$user_id = $_SESSION['user_id'];
-$content = isset($_POST['content']) ? trim($_POST['content']) : '';
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['content']) && !empty(trim($_POST['content']))) {
+    $tweet_content = trim($_POST['content']);
+    $user_id = $_SESSION['user_id'];
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($content)) {
-    $stmt = $conn->prepare("INSERT INTO tweets (user_id, content) VALUES (?, ?)");
-    $stmt->execute([$user_id, $content]);
-    $_SESSION['success'] = "Tweet geplaatst!";
-    header('Location: user.php');
-    exit();
-} else {
-    $_SESSION['error'] = "Je tweet mag niet leeg zijn!";
-    header('Location: user.php');
-    exit();
+    // Voeg tweet toe aan database
+    $stmt = $conn->prepare("INSERT INTO tweets (user_id, content, created_at) VALUES (:user_id, :content, NOW())");
+    $stmt->execute([
+        'user_id' => $user_id,
+        'content' => $tweet_content
+    ]);
 }
+
+header('Location: user.php');
+exit();
