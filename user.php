@@ -50,9 +50,9 @@ $tweets = $stmt->fetchAll();
             <a href="bookmarks.php" class="nav-item">Bookmarks</a>
             <a href="messages.php" class="nav-item">Messages</a>
             <a href="profile.php" class="nav-item">Profile</a>
+            <a href="Settings.php" class="nav-item">Settings</a>
             <a href="index.php" class="nav-item">Logout</a>
         </nav>
-        <button class="tweet-btn">Tweet</button>
     </aside>
 
     <!-- Main Feed Section -->
@@ -100,16 +100,28 @@ $tweets = $stmt->fetchAll();
                                 <!-- Like Formulier -->
                                 <form action="like_tweet.php" method="POST" style="display: inline-block;">
                                     <input type="hidden" name="tweet_id" value="<?php echo htmlspecialchars($tweet['tweet_id']); ?>">
+                                    <?php
+                                    // Controleer of gebruiker de tweet al heeft geliket
+                                    $stmt = $conn->prepare("SELECT * FROM likes WHERE user_id = ? AND tweet_id = ?");
+                                    $stmt->execute([$_SESSION['user_id'], $tweet['tweet_id']]);
+                                    $isLiked = $stmt->rowCount() > 0; // True als al geliket
+                                    ?>
                                     <button type="submit" class="like-btn">
-                                        ❤️ Like (<?php echo (int)$tweet['likes_count']; ?>)
+                                        <?php echo $isLiked ? "💔 Unlike" : "❤️ Like"; ?> (<?php echo (int)$tweet['likes_count']; ?>)
                                     </button>
                                 </form>
 
                                 <!-- Retweet Formulier -->
                                 <form action="retweet_tweet.php" method="POST" style="display: inline-block;">
                                     <input type="hidden" name="tweet_id" value="<?php echo htmlspecialchars($tweet['tweet_id']); ?>">
+                                    <?php
+                                    // Controleer of gebruiker de tweet al heeft geretweet
+                                    $stmt = $conn->prepare("SELECT * FROM retweets WHERE user_id = ? AND tweet_id = ?");
+                                    $stmt->execute([$_SESSION['user_id'], $tweet['tweet_id']]);
+                                    $isRetweeted = $stmt->rowCount() > 0; // True als al geretweet
+                                    ?>
                                     <button type="submit" class="retweet-btn">
-                                        🔁 Retweet (<?php echo (int)$tweet['retweets_count']; ?>)
+                                        <?php echo $isRetweeted ? "⛔ Unretweet" : "🔁 Retweet"; ?> (<?php echo (int)$tweet['retweets_count']; ?>)
                                     </button>
                                 </form>
                             </div>
@@ -119,6 +131,7 @@ $tweets = $stmt->fetchAll();
             <?php else: ?>
                 <p>Geen tweets gevonden.</p>
             <?php endif; ?>
+
         </div>
     </main>
 </div>

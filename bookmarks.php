@@ -20,7 +20,6 @@
                 <a href="Settings.php" class="nav-item">Settings</a>
                 <a href="index.php" class="nav-item">Logout</a>
             </nav>
-            <button class="tweet-btn">Tweet</button>
         </aside>
 
         <main class="feed">
