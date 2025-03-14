@@ -48,7 +48,6 @@ $tweets = $stmt->fetchAll();
         <nav class="sidebar-nav">
             <a href="user.php" class="nav-item active">Home</a>
             <a href="bookmarks.php" class="nav-item">Bookmarks</a>
-            <a href="messages.php" class="nav-item">Messages</a>
             <a href="profile.php" class="nav-item">Profile</a>
             <a href="Settings.php" class="nav-item">Settings</a>
             <a href="index.php" class="nav-item">Logout</a>
@@ -65,8 +64,8 @@ $tweets = $stmt->fetchAll();
         <!-- Tweet-invoerveld -->
         <div class="tweet-box">
             <form action="post_tweet.php" method="POST">
-                <textarea name="content" placeholder="What's happening?" rows="4" required></textarea>
-                <button type="submit" class="post-btn">Tweet</button>
+                <textarea name="content" placeholder="Wat gebeurt er?" rows="4" required></textarea>
+                <button type="submit" class="post-btn">Chirpitweet</button>
             </form>
         </div>
 
@@ -121,7 +120,7 @@ $tweets = $stmt->fetchAll();
                                     <form action="delete_tweet.php" method="POST" style="display: inline-block;">
                                         <input type="hidden" name="tweet_id" value="<?php echo htmlspecialchars($tweet['tweet_id']); ?>">
                                         <button type="submit" class="delete-btn">
-                                            ❌ Delete
+                                            ❌ Verwijder
                                         </button>
                                     </form>
                                 <?php endif; ?>
