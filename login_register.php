@@ -15,10 +15,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = isset($_POST['password']) ? $_POST['password'] : '';
 
     if (isset($_POST['register'])) {
+
         $name = isset($_POST['name']) ? trim($_POST['name']) : '';
         $role = isset($_POST['role']) ? $_POST['role'] : '';
 
-        if (!$name || !$email || !$password || !in_array($role, ['User', 'Admin', 'Guest'])) {
+        if (!$name || !$email || !$password || $role !== 'User') {
             $_SESSION['error'] = "Ongeldige invoer!";
         } else {
             $stmt = $conn->prepare("SELECT id FROM users WHERE email = ? OR name = ?");
@@ -28,11 +29,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_SESSION['error'] = "Naam of e-mail in gebruik!";
             } else {
                 $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-
-                // Gebruiker toevoegen met standaardwaarden
                 $stmt = $conn->prepare("
-                    INSERT INTO users (name, email, password, role, followers_count, following_count, bio, profile_picture, banner) 
-                    VALUES (?, ?, ?, ?, 0, 0, '', 'default-avatar.jpg', 'default-banner.jpg')
+                    INSERT INTO users (name, email, password, role, bio) 
+                    VALUES (?, ?, ?, ?, '')
                 ");
                 $stmt->execute([$name, $email, $hashed_password, $role]);
                 $_SESSION['success'] = "Registratie succesvol!";
@@ -41,8 +40,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if (isset($_POST['login'])) {
+        // Login
         $stmt = $conn->prepare("
-            SELECT id, name, password, role, followers_count, following_count, bio, profile_picture, banner 
+            SELECT id, name, password, role, bio 
             FROM users WHERE email = ?
         ");
         $stmt->execute([$email]);
@@ -52,14 +52,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION = [
                 'user_id' => $user['id'],
                 'user_name' => $user['name'],
-                'role' => $user['role'],
-                'followers_count' => $user['followers_count'],
-                'following_count' => $user['following_count'],
-                'bio' => $user['bio'],
-                'profile_picture' => $user['profile_picture'],
-                'banner' => $user['banner']
+                'bio' => $user['bio']
             ];
-            header("Location: " . ($user['role'] === 'Admin' ? "admin.php" : "user.php"));
+            header("Location: user.php");
             exit();
         } else {
             $_SESSION['error'] = "Ongeldig e-mailadres of wachtwoord!";

@@ -16,17 +16,30 @@ try {
     die("Connectiefout: " . $e->getMessage());
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['content']) && !empty(trim($_POST['content']))) {
-    $tweet_content = trim($_POST['content']);
+// Controleer of er een inhoud is
+if (isset($_POST['content']) && !empty($_POST['content'])) {
+    $content = $_POST['content'];
     $user_id = $_SESSION['user_id'];
 
-    // Voeg tweet toe aan database
-    $stmt = $conn->prepare("INSERT INTO tweets (user_id, content, created_at) VALUES (:user_id, :content, NOW())");
-    $stmt->execute([
-        'user_id' => $user_id,
-        'content' => $tweet_content
-    ]);
-}
+    // Controleer of er een afbeelding is geüpload
+    $imagePath = null;
+    if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+        $imageTmpName = $_FILES['image']['tmp_name'];
+        $imageName = basename($_FILES['image']['name']);
+        $uploadDir = 'uploads/'; // Zorg ervoor dat deze map bestaat en schrijfbaar is
+        $imagePath = $uploadDir . time() . '_' . $imageName;
 
-header('Location: user.php');
-exit();
+        // Verplaats de geüploade afbeelding naar de uploads-map
+        move_uploaded_file($imageTmpName, $imagePath);
+    }
+
+    // Tweet met optioneel beeldbestand opslaan
+    $stmt = $conn->prepare("INSERT INTO tweets (content, user_id, image, created_at) VALUES (?, ?, ?, NOW())");
+    $stmt->execute([$content, $user_id, $imagePath]);
+
+    header('Location: user.php'); // Keer terug naar de feed na het posten
+    exit();
+} else {
+    echo "De tweet kan niet leeg zijn!";
+}
+?>

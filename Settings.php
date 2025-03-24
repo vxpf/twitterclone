@@ -15,8 +15,6 @@
             </div>
             <nav class="sidebar-nav">
                 <a href="user.php" class="nav-item">Home</a>
-                <a href="bookmarks.php" class="nav-item">Bookmarks</a>
-
                 <a href="profile.php" class="nav-item">Profile</a>
                 <a href="Settings.php" class="nav-item active">Settings</a>
                 <a href="index.php" class="nav-item">Logout</a>

@@ -62,8 +62,6 @@
             <select name="role" required>
                 <option value="">--Selecteer rol--</option>
                 <option value="User">User</option>
-                <option value="Admin">Admin</option>
-                <option value="Guest">Guest</option>
             </select>
             <button type="submit" name="register">Registreer</button>
             <p>Heb je al een account? <a href="#" onclick="showForm('login-form')">Login</a></p>

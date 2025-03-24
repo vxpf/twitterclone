@@ -188,6 +188,13 @@ body {
   box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* Formulier container */
+.tweet-form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Ruimte tussen elementen */
+}
+
 textarea {
   width: 100%;
   resize: none;
@@ -198,19 +205,41 @@ textarea {
   background-color: #ffffff;
   color: #333;
   outline: none;
-  margin-bottom: 10px;
+}
+
+.file-actions {
+  display: flex;
+  justify-content: space-between; /* Bestand en knop aan beide kanten */
+  margin-top: 10px;
+}
+
+.file-label {
+  display: inline-block;
+  padding: 8px 15px;
+  font-size: 14px;
+  background-color: #e8f5fe;
+  color: #14171a;
+  border: 2px solid #1da1f2;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.file-label:hover {
+  background-color: #1da1f2;
+  color: white;
+  border-color: #1a91da;
 }
 
 .post-btn {
-  display: inline-block;
-  padding: 10px 20px;
-  font-size: 16px;
-  color: white;
   background-color: #1da1f2;
+  color: white;
   border: none;
+  padding: 8px 15px;
   border-radius: 25px;
+  font-size: 16px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s ease;
 }
 
 .post-btn:hover {

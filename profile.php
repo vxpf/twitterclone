@@ -9,12 +9,7 @@ if (!isset($_SESSION['user_id'])) {
 // Haal gegevens op uit de sessie
 $user_id = $_SESSION['user_id'];
 $user_name = $_SESSION['user_name'];
-$role = $_SESSION['role'];
-$followers_count = $_SESSION['followers_count'];
-$following_count = $_SESSION['following_count'];
 $bio = $_SESSION['bio'];
-$profile_picture = $_SESSION['profile_picture'];
-$banner = $_SESSION['banner'];
 ?>
 
 <!DOCTYPE html>
@@ -34,7 +29,6 @@ $banner = $_SESSION['banner'];
         </div>
         <nav class="sidebar-nav">
             <a href="user.php" class="nav-item">Home</a>
-            <a href="bookmarks.php" class="nav-item">Bookmarks</a>
             <a href="profile.php" class="nav-item active">Profile</a>
             <a href="Settings.php" class="nav-item">Settings</a>
             <a href="index.php" class="nav-item">Logout</a>
@@ -49,22 +43,10 @@ $banner = $_SESSION['banner'];
 
         <!-- Profieldetails -->
         <div class="profile-header">
-            <div class="profile-banner">
-                <img src="<?php echo htmlspecialchars($banner); ?>" alt="Banner">
-            </div>
-            <div class="profile-info">
-                <div class="profile-avatar">
-                    <img src="<?php echo htmlspecialchars($profile_picture); ?>" alt="Profielfoto">
-                </div>
-                <div class="profile-details">
-                    <h2 class="profile-name"><?php echo htmlspecialchars($user_name); ?></h2>
-                    <span class="profile-handle">@<?php echo strtolower(str_replace(' ', '', htmlspecialchars($user_name))); ?></span>
-                    <p class="profile-bio"><?php echo htmlspecialchars($bio ?: "Deze gebruiker heeft nog geen bio."); ?></p>
-                    <div class="profile-meta">
-                        <span><strong><?php echo $following_count; ?></strong> Following</span>
-                        <span><strong><?php echo $followers_count; ?></strong> Followers</span>
-                    </div>
-                </div>
+            <div class="profile-details">
+                <h2 class="profile-name"><?php echo htmlspecialchars($user_name); ?></h2>
+                <span class="profile-handle">@<?php echo strtolower(str_replace(' ', '', htmlspecialchars($user_name))); ?></span>
+                <p class="profile-bio"><?php echo htmlspecialchars($bio ?: "Deze gebruiker heeft nog geen bio."); ?></p>
             </div>
         </div>
     </main>
