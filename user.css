@@ -443,5 +443,69 @@ textarea {
     font-size: 14px;
   }
 }
+/* Profiel Header Styling */
+.profile-header {
+  width: 100%;
+  text-align: center;
+  margin: 0 auto;
+}
 
+/* Banner styling */
+.profile-banner-container {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  position: relative;
+  background-color: #d9e8f6;
+}
+
+.profile-banner-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Profielafbeelding styling */
+.profile-picture {
+  width: 150px; /* De cirkelbreedte */
+  height: 150px; /* Zorg ervoor dat de hoogte gelijk is aan de breedte */
+  margin: 0px auto 10px; /* Corrigeer positie, afhankelijk van grootte */
+  border: 5px solid #fff; /* Mooie rand rond de cirkel */
+  border-radius: 50%; /* Zorg ervoor dat het een perfecte cirkel is */
+  overflow: hidden; /* Zorg ervoor dat de inhoud binnen de cirkel blijft */
+  display: flex; /* Zorgt ervoor dat de afbeelding gecentreerd wordt binnen de container */
+  justify-content: center;
+  align-items: center;
+  background-color: #e6e6e6; /* Optionele achtergrondkleur (bij geen afbeelding) */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optionele schaduw */
+}
+
+.profile-picture img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Zorg ervoor dat de afbeelding niet vervormd wordt */
+  border-radius: 50%; /* Houd de afbeelding rond */
+}
+
+/* Profiel informatie styling */
+.profile-name {
+  font-size: 22px;
+  font-weight: bold;
+  color: #14171a;
+  margin-top: 10px;
+}
+
+.profile-handle {
+  font-size: 16px;
+  color: #657786;
+  margin-top: 5px;
+}
+
+.profile-bio {
+  font-size: 14px;
+  color: #333;
+  margin-top: 10px;
+  padding: 0 15px; /* Margins voor kleine schermen */
+  line-height: 1.5;
+}
 

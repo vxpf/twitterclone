@@ -22,6 +22,7 @@ $bio = $_SESSION['bio'];
 </head>
 <body>
 <div class="twitter-container">
+
     <!-- Sidebar -->
     <aside class="sidebar">
         <div class="logo">
@@ -35,20 +36,34 @@ $bio = $_SESSION['bio'];
         </nav>
     </aside>
 
-    <!-- Profielpagina hoofdcontent -->
+    <!-- Content -->
     <main class="feed profile-main">
         <header class="feed-header">
             <h1>Profiel</h1>
         </header>
 
-        <!-- Profieldetails -->
-        <div class="profile-header">
-            <div class="profile-details">
-                <h2 class="profile-name"><?php echo htmlspecialchars($user_name); ?></h2>
-                <span class="profile-handle">@<?php echo strtolower(str_replace(' ', '', htmlspecialchars($user_name))); ?></span>
-                <p class="profile-bio"><?php echo htmlspecialchars($bio ?: "Deze gebruiker heeft nog geen bio."); ?></p>
+        <section class="profile-header">
+            <!-- Banner -->
+            <div class="profile-banner-container">
+                <img src="path/to/default-banner.jpg" alt="Banner afbeelding" class="profile-banner">
+
+                <!-- Profiel foto -->
+                <div class="profile-picture">
+                    <img src="path/to/default-profile.png" alt="Profiel foto">
+                </div>
             </div>
-        </div>
+
+            <!-- Profiel-informatie -->
+            <div class="profile-info">
+                <h2 class="profile-name"><?php echo htmlspecialchars($user_name); ?></h2>
+                <p class="profile-handle">@<?php echo strtolower(str_replace(' ', '', htmlspecialchars($user_name))); ?></p>
+                <p class="profile-bio">
+                    <?php echo htmlspecialchars($bio ?: "Deze gebruiker heeft nog geen bio."); ?>
+                </p>
+            </div>
+        </section>
+            </div>
+        </section>
     </main>
 </div>
 </body>
