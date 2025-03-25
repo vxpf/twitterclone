@@ -21,7 +21,7 @@
             </nav>
         </aside>
 
-        <!-- Main Settings (Center) -->
+      
         <main class="feed">
             <header class="feed-header">
                 <h1>Settings</h1>
