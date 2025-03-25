@@ -36,12 +36,12 @@ $tweets = $stmt->fetchAll();
     <title>Chirpify - Feed</title>
     <link rel="stylesheet" href="user.css">
     <style>
-        /* Verberg de originele file input */
+       
         input[type="file"] {
             display: none;
         }
 
-        /* Stijl voor de aangepaste bestand upload knop */
+        
         .file-label {
             display: inline-block;
             padding: 10px 20px;
@@ -69,7 +69,7 @@ $tweets = $stmt->fetchAll();
 <body>
 <div class="twitter-container">
 
-    <!-- Sidebar -->
+   
     <aside class="sidebar">
         <div class="logo">
             <h2>Chirpify</h2>
@@ -82,19 +82,17 @@ $tweets = $stmt->fetchAll();
         </nav>
     </aside>
 
-    <!-- Main Feed Section -->
+    
     <main class="feed">
-        <!-- Titel van de Feed -->
+     
         <header class="feed-header">
             <h1>Home</h1>
         </header>
 
-        <!-- Tweet-invoerveld -->
         <div class="tweet-box">
             <form action="post_tweet.php" method="POST" enctype="multipart/form-data">
                 <textarea name="content" placeholder="Wat gebeurt er?" rows="4" required></textarea>
 
-                <!-- Aangepaste Bestand Kiezen -->
                 <input type="file" name="image" id="file-upload" accept="image/*">
                 <label for="file-upload" class="file-label">Bestand</label>
 
@@ -102,7 +100,7 @@ $tweets = $stmt->fetchAll();
             </form>
         </div>
 
-        <!-- Tweets Weergave -->
+    
         <div class="tweets">
             <?php if (!empty($tweets)): ?>
                 <?php foreach ($tweets as $tweet): ?>
@@ -115,7 +113,7 @@ $tweets = $stmt->fetchAll();
                                 <span class="time">• <?php echo date("H:i", strtotime($tweet['created_at'])); ?></span>
                             </div>
 
-                            <!-- Tweet Tekst en Optionele Afbeelding -->
+                          
                             <p><?php echo htmlspecialchars($tweet['content']); ?></p>
                             <?php if (!empty($tweet['image'])): ?>
                                 <img src="<?php echo htmlspecialchars($tweet['image']); ?>"
@@ -124,16 +122,16 @@ $tweets = $stmt->fetchAll();
                                      style="max-width: 100%; height: auto;">
                             <?php endif; ?>
 
-                            <!-- Tweet Acties -->
+                        
                             <div class="tweet-actions">
-                                <!-- Like Formulier -->
+                           
                                 <form action="like_tweet.php" method="POST" style="display: inline-block;">
                                     <input type="hidden" name="tweet_id" value="<?php echo htmlspecialchars($tweet['tweet_id']); ?>">
                                     <?php
-                                    // Controleer of gebruiker de tweet al heeft geliked
+                                    
                                     $stmt = $conn->prepare("SELECT * FROM likes WHERE user_id = ? AND tweet_id = ?");
                                     $stmt->execute([$_SESSION['user_id'], $tweet['tweet_id']]);
-                                    $isLiked = $stmt->rowCount() > 0; // True als al geliket
+                                    $isLiked = $stmt->rowCount() > 0; 
                                     ?>
                                     <button type="submit" class="like-btn">
                                         <?php echo $isLiked ? "💔 Unlike" : "❤️ Like"; ?> (<?php echo (int)$tweet['likes_count']; ?>)

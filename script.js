@@ -3,4 +3,7 @@ function showForm(formId) {
     document.getElementById(formId).classList.add("active");
 }
 
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
