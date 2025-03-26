@@ -18,8 +18,17 @@ try {
     die("Connectiefout: " . $e->getMessage());
 }
 
-$user_id = (int) $_SESSION['user_id']; // Zorg ervoor dat het id een integer is
+$user_id = (int)$_SESSION['user_id']; // Zorg ervoor dat het id een integer is
 $message = "";
+
+// Haal huidige sessievariabelen of standaardwaarden op
+if (!isset($_SESSION['profile_picture'])) {
+    $_SESSION['profile_picture'] = 'path/to/default-profile.png'; // Plaats hier het pad naar een standaardfoto
+}
+
+if (!isset($_SESSION['banner'])) {
+    $_SESSION['banner'] = 'path/to/default-banner.png'; // Plaats hier het pad naar een standaardbanner
+}
 
 // Als het formulier verzonden wordt
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -29,8 +38,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $bio = htmlspecialchars(trim($_POST['bio']));
     $password = !empty($_POST['password']) ? password_hash($_POST['password'], PASSWORD_DEFAULT) : null;
 
+    // Uploadfolders (zorg dat deze mappen bestaan met de juiste schrijfrechten)
+    $uploadDir = "uploads/";
+
+    // Profielfoto uploaden
+    $profilePicture = $_SESSION['profile_picture']; // Begin met de huidige profielfoto
+    if (isset($_FILES['profile_picture']) && $_FILES['profile_picture']['error'] === UPLOAD_ERR_OK) {
+        $profilePictureTmp = $_FILES['profile_picture']['tmp_name'];
+        $profilePictureName = "profile_" . time() . "_" . basename($_FILES['profile_picture']['name']);
+        $profilePicturePath = $uploadDir . $profilePictureName;
+
+        if (move_uploaded_file($profilePictureTmp, $profilePicturePath)) {
+            $profilePicture = $profilePicturePath; // Alleen opslaan als de upload succesvol was
+        }
+    }
+
+    // Banner uploaden
+    $banner = $_SESSION['banner']; // Begin met de huidige banner
+    if (isset($_FILES['banner']) && $_FILES['banner']['error'] === UPLOAD_ERR_OK) {
+        $bannerTmp = $_FILES['banner']['tmp_name'];
+        $bannerName = "banner_" . time() . "_" . basename($_FILES['banner']['name']);
+        $bannerPath = $uploadDir . $bannerName;
+
+        if (move_uploaded_file($bannerTmp, $bannerPath)) {
+            $banner = $bannerPath; // Alleen opslaan als de upload succesvol was
+        }
+    }
+
     try {
-        // Bouw de `UPDATE`-query progressief op
+        // Bouw de `UPDATE`-query op
         $query = "UPDATE users SET name = :name, email = :email, bio = :bio";
         $params = [
             ':name' => $name,
@@ -38,7 +74,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ':bio' => $bio,
         ];
 
-        // Voeg het wachtwoord toe aan de query als het is ingevuld
+        // Voeg de profielfoto toe aan de query als die werd gewijzigd
+        if ($profilePicture !== $_SESSION['profile_picture']) {
+            $query .= ", profile_picture = :profile_picture";
+            $params[':profile_picture'] = $profilePicture;
+        }
+
+        // Voeg de banner toe aan de query als die werd gewijzigd
+        if ($banner !== $_SESSION['banner']) {
+            $query .= ", banner = :banner";
+            $params[':banner'] = $banner;
+        }
+
+        // Voeg het wachtwoord toe aan de query als die is ingevuld
         if ($password) {
             $query .= ", password = :password";
             $params[':password'] = $password;
@@ -54,8 +102,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Update de sessievariabelen na een succesvolle update
         $_SESSION['user_name'] = $name;
         $_SESSION['bio'] = $bio;
+        $_SESSION['profile_picture'] = $profilePicture;
+        $_SESSION['banner'] = $banner;
 
-        // Succesbericht instellen
+        // Succesbericht
         $message = "Je instellingen zijn met succes opgeslagen!";
     } catch (PDOException $e) {
         $message = "Er is een fout opgetreden: " . $e->getMessage();
@@ -63,7 +113,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 // Haal de huidige gegevens van de gebruiker op
-$stmt = $conn->prepare("SELECT name, email, bio FROM users WHERE id = :user_id");
+$stmt = $conn->prepare("SELECT name, email, bio, profile_picture, banner FROM users WHERE id = :user_id");
 $stmt->execute([':user_id' => $user_id]);
 $user = $stmt->fetch();
 
@@ -81,27 +131,24 @@ if (!$user) {
     <link rel="stylesheet" href="user.css">
     <style>
         .message {
-            background-color: #d4edda; /* Lichtgroene achtergrond */
-            color: #155724; /* Donkergroene tekstkleur */
-            border: 1px solid #c3e6cb; /* Rand */
-            padding: 10px 15px; /* Ruimte binnenin */
-            border-radius: 5px; /* Hoekjes afronden */
-            margin-bottom: 20px; /* Ruimte onder het bericht */
-            font-family: Arial, sans-serif; /* Net lettertype */
-            font-size: 14px; /* Goede leesbaarheid */
-            opacity: 1; /* Volledig zichtbaar bij het begin */
-            transition: opacity 1s ease; /* Zorgt voor een vloeiende overgang */
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            opacity: 1;
+            transition: opacity 1s ease;
         }
 
         .message.hidden {
-            opacity: 0; /* Verberg het bericht (onzichtbaar) */
+            opacity: 0;
         }
-
     </style>
 </head>
 <body>
 <div class="twitter-container">
-
     <aside class="sidebar">
         <div class="logo">
             <h2>Chirpify</h2>
@@ -121,27 +168,40 @@ if (!$user) {
         <div class="profile-edit-form">
             <h2>Account Settings</h2>
 
-            <!-- Het bericht indien aanwezig -->
             <?php if ($message): ?>
                 <p id="message" class="message"><?= htmlspecialchars($message); ?></p>
             <?php endif; ?>
 
-            <form method="POST" action="">
+            <form method="POST" action="" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="name">Naam</label>
-                    <input type="text" id="name" name="name" value="<?= htmlspecialchars($user['name']); ?>" placeholder="Naam" required>
+                    <input type="text" id="name" name="name" value="<?= htmlspecialchars($user['name']); ?>" required>
                 </div>
                 <div class="form-group">
                     <label for="email">Email</label>
-                    <input type="email" id="email" name="email" value="<?= htmlspecialchars($user['email']); ?>" placeholder="email@example.com" required>
+                    <input type="email" id="email" name="email" value="<?= htmlspecialchars($user['email']); ?>" required>
                 </div>
                 <div class="form-group">
                     <label for="bio">Bio</label>
-                    <textarea id="bio" name="bio" placeholder="Vertel iets over jezelf"><?= htmlspecialchars($user['bio']); ?></textarea>
+                    <textarea id="bio" name="bio"><?= htmlspecialchars($user['bio']); ?></textarea>
                 </div>
                 <div class="form-group">
                     <label for="password">Nieuw Wachtwoord</label>
-                    <input type="password" id="password" name="password" placeholder="••••••••">
+                    <input type="password" id="password" name="password">
+                </div>
+                <div class="form-group">
+                    <label for="profile_picture">Profielfoto</label>
+                    <input type="file" id="profile_picture" name="profile_picture" accept="image/*">
+                    <?php if (!empty($user['profile_picture'])): ?>
+                        <img src="<?= htmlspecialchars($user['profile_picture']); ?>" alt="Profielfoto" style="width: 100px;">
+                    <?php endif; ?>
+                </div>
+                <div class="form-group">
+                    <label for="banner">Banner</label>
+                    <input type="file" id="banner" name="banner" accept="image/*">
+                    <?php if (!empty($user['banner'])): ?>
+                        <img src="<?= htmlspecialchars($user['banner']); ?>" alt="Banner" style="width: 100%; max-width: 300px;">
+                    <?php endif; ?>
                 </div>
                 <button type="submit" class="save-profile-btn">Opslaan</button>
                 <button type="button" class="cancel-edit-btn" onclick="window.location.href='user.php';">Annuleren</button>
@@ -149,17 +209,15 @@ if (!$user) {
         </div>
     </main>
 </div>
-
 <script>
-    // Verwijder het bericht na 3 seconden
     const messageElement = document.getElementById('message');
     if (messageElement) {
         setTimeout(() => {
-            messageElement.classList.add('hidden'); // Voeg de klasse 'hidden' toe
+            messageElement.classList.add('hidden');
             setTimeout(() => {
-                messageElement.remove(); // Verwijder het element na de animatie
-            }, 1000); // Wacht op het einde van de fade-out transitie (1 seconde)
-        }, 3000); // Wacht 3 seconden voordat de fade-out start
+                messageElement.remove();
+            }, 1000);
+        }, 3000);
     }
 </script>
 </body>
