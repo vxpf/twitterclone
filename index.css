@@ -85,7 +85,7 @@ p a:hover{
     text-decoration: underline;
 }
 
-error, .success {
+.error, .success {
     padding: 12px;
     border-radius: 6px;
     text-align: center;

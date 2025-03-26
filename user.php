@@ -75,6 +75,7 @@ function tijdVerstreken($timestamp) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chirpify - Home</title>
     <link rel="stylesheet" href="user.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
         /* Extra CSS voor bestand upload */
         input[type="file"] {
@@ -114,11 +115,11 @@ function tijdVerstreken($timestamp) {
             <h2>Chirpify</h2>
         </div>
         <nav class="sidebar-nav">
-            <a href="user.php" class="nav-item active">Home</a>
-            <a href="profile.php" class="nav-item">Profile</a>
-            <a href="settings.php" class="nav-item">Settings</a>
-            <a href="index.php" class="nav-item">Logout</a>
-           
+        <a href="user.php" class="nav-item"> <i class="fa-sharp fa-solid fa-house" style="color: #000000;"></i>  Home</a>
+            <a href="profile.php" class="nav-item active"><i class="fa-sharp fa-solid fa-user" style="color: #000000;"></i>  Profile</a>
+            <a href="settings.php" class="nav-item"><i class="fa-solid fa-gear" style="color: #000000;"></i> Settings</a>
+            <a href="index.php" class="nav-item"><i class="fa-sharp fa-solid fa-right-from-bracket" style="color: #030303;"></i>Logout</a>
+            
         </nav>
     </aside>
 
