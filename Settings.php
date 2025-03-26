@@ -111,6 +111,7 @@ if (!$user) {
             <a href="profile.php" class="nav-item">Profile</a>
             <a href="settings.php" class="nav-item active">Settings</a>
             <a href="index.php" class="nav-item">Logout</a>
+            
         </nav>
     </aside>
 

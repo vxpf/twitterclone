@@ -6,7 +6,7 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-// Haal gegevens op uit de sessie
+
 $user_id = $_SESSION['user_id'];
 $user_name = $_SESSION['user_name'];
 $bio = $_SESSION['bio'];
@@ -19,6 +19,7 @@ $bio = $_SESSION['bio'];
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chirpify - Profiel</title>
     <link rel="stylesheet" href="user.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 </head>
 <body>
 <div class="twitter-container">
@@ -33,6 +34,7 @@ $bio = $_SESSION['bio'];
             <a href="profile.php" class="nav-item active">Profile</a>
             <a href="Settings.php" class="nav-item">Settings</a>
             <a href="index.php" class="nav-item">Logout</a>
+            
         </nav>
     </aside>
 
@@ -55,13 +57,16 @@ $bio = $_SESSION['bio'];
 
             <!-- Profiel-informatie -->
             <div class="profile-info">
-                <h2 class="profile-name"><?php echo htmlspecialchars($user_name); ?></h2>
+                <h2 class="profile-name">
+                    <?php echo htmlspecialchars($user_name); ?>
+                    <a href="settings.php" class="edit-profile-link">
+                    <i class="fa-solid fa-user-pen" style="color: #000000;"></i>
+                    </a>
+                </h2>
                 <p class="profile-handle">@<?php echo strtolower(str_replace(' ', '', htmlspecialchars($user_name))); ?></p>
                 <p class="profile-bio">
                     <?php echo htmlspecialchars($bio ?: "Deze gebruiker heeft nog geen bio."); ?>
                 </p>
-            </div>
-        </section>
             </div>
         </section>
     </main>

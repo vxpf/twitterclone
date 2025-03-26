@@ -79,6 +79,7 @@ $tweets = $stmt->fetchAll();
             <a href="profile.php" class="nav-item">Profile</a>
             <a href="settings.php" class="nav-item">Settings</a>
             <a href="index.php" class="nav-item">Logout</a>
+           
         </nav>
     </aside>
 
