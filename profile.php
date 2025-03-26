@@ -7,9 +7,6 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 
-$user_id = $_SESSION['user_id'];
-$user_name = $_SESSION['user_name'];
-$bio = $_SESSION['bio'];
 ?>
 
 <!DOCTYPE html>
@@ -32,7 +29,7 @@ $bio = $_SESSION['bio'];
         <nav class="sidebar-nav">
             <a href="user.php" class="nav-item">Home</a>
             <a href="profile.php" class="nav-item active">Profile</a>
-            <a href="Settings.php" class="nav-item">Settings</a>
+            <a href="settings.php" class="nav-item">Settings</a>
             <a href="index.php" class="nav-item">Logout</a>
             
         </nav>
@@ -47,22 +44,17 @@ $bio = $_SESSION['bio'];
         <section class="profile-header">
             <!-- Banner -->
             <div class="profile-banner-container">
-                <img src="path/to/default-banner.jpg" alt="Banner afbeelding" class="profile-banner">
-
-                <!-- Profiel foto -->
-                <div class="profile-picture">
-                    <img src="path/to/default-profile.png" alt="Profiel foto">
-                </div>
+                <img src="<?= htmlspecialchars($banner); ?>" alt="Banner afbeelding" class="profile-banner">
             </div>
 
-            <!-- Profiel-informatie -->
+            <!-- Profielfoto -->
+            <div class="profile-picture">
+                <img src="<?= htmlspecialchars($profilePicture); ?>" alt="Profielfoto">
+            </div>
+
+            <!-- Profiel informatie -->
             <div class="profile-info">
-                <h2 class="profile-name">
-                    <?php echo htmlspecialchars($user_name); ?>
-                    <a href="settings.php" class="edit-profile-link">
-                    <i class="fa-solid fa-user-pen" style="color: #000000;"></i>
-                    </a>
-                </h2>
+                <h2 class="profile-name"><?php echo htmlspecialchars($user_name); ?></h2>
                 <p class="profile-handle">@<?php echo strtolower(str_replace(' ', '', htmlspecialchars($user_name))); ?></p>
                 <p class="profile-bio">
                     <?php echo htmlspecialchars($bio ?: "Deze gebruiker heeft nog geen bio."); ?>

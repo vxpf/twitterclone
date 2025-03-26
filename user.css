@@ -448,46 +448,53 @@ textarea {
   width: 100%;
   text-align: center;
   margin: 0 auto;
+  position: relative; /* Belangrijk voor overlappen */
 }
 
 /* Banner styling */
 .profile-banner-container {
   width: 100%;
-  height: 200px;
+  height: 200px; /* Hoogte van de banner */
   overflow: hidden;
-  position: relative;
-  background-color: #d9e8f6;
+  position: relative; /* Nodig voor overlappen */
+  background-color: #d9e8f6; /* Achtergrondkleur als er geen afbeelding is */
 }
 
 .profile-banner-container img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: cover; /* Zorg dat de afbeelding zich aanpast zonder te vervormen */
 }
 
-/* Profielafbeelding styling */
 .profile-picture {
-  width: 150px; /* De cirkelbreedte */
-  height: 150px; /* Zorg ervoor dat de hoogte gelijk is aan de breedte */
-  margin: 0px auto 10px; /* Corrigeer positie, afhankelijk van grootte */
-  border: 5px solid #fff; /* Mooie rand rond de cirkel */
-  border-radius: 50%; /* Zorg ervoor dat het een perfecte cirkel is */
-  overflow: hidden; /* Zorg ervoor dat de inhoud binnen de cirkel blijft */
-  display: flex; /* Zorgt ervoor dat de afbeelding gecentreerd wordt binnen de container */
+  position: absolute; /* Positioneer profielafbeelding ten opzichte van de banner */
+  left: 50%; /* Centreer horizontaal */
+  transform: translateX(-50%); /* Zorg dat het precies in het midden staat */
+  width: 125px; /* Breedte van de profielfoto */
+  height: 125px; /* Zorg dat het een vierkant is */
+  border-radius: 50%; /* Maak het rond */
+  border: 5px solid #fff; /* Witte rand om de profielfoto */
+  display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #e6e6e6; /* Optionele achtergrondkleur (bij geen afbeelding) */
+  background-color: #e6e6e6; /* Achtergrondkleur als er geen afbeelding is */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optionele schaduw */
+  z-index: 2; /* Zorg dat de profielfoto over de banner blijft */
+  margin-top: -85px;
 }
 
 .profile-picture img {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Zorg ervoor dat de afbeelding niet vervormd wordt */
-  border-radius: 50%; /* Houd de afbeelding rond */
+  object-fit: cover;
+  border-radius: 50%; /* Zorg dat de afbeelding rond blijft */
 }
 
 /* Profiel informatie styling */
+.profile-info {
+  margin-top: 50px; /* Voeg ruimte toe onder de overlappende foto */
+}
+
 .profile-name {
   font-size: 22px;
   font-weight: bold;
@@ -505,7 +512,7 @@ textarea {
   font-size: 14px;
   color: #333;
   margin-top: 10px;
-  padding: 0 15px; 
+  padding: 0 15px;
   line-height: 1.5;
 }
 
