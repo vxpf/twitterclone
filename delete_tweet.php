@@ -1,44 +1,37 @@
 <?php
 session_start();
 
-// Controleer of gebruiker is ingelogd
 if (!isset($_SESSION['user_id'])) {
     header('Location: index.php');
     exit();
 }
 
-// Controleer of tweet_id is meegestuurd
-if (!isset($_POST['tweet_id']) || empty($_POST['tweet_id'])) {
-    header('Location: user.php');
-    exit();
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['tweet_id'])) {
+    try {
+        $conn = new PDO(
+            "mysql:host=localhost;dbname=login_system",
+            "root",
+            "",
+            [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
+        );
+
+        // Controleer of de tweet van de ingelogde gebruiker is
+        $stmt = $conn->prepare("SELECT user_id FROM tweets WHERE id = ? AND parent_tweet_id IS NULL");
+        $stmt->execute([$_POST['tweet_id']]);
+        $tweet = $stmt->fetch();
+
+        if ($tweet && $tweet['user_id'] === $_SESSION['user_id']) {
+            // Verwijder de tweet en alle bijbehorende reacties
+            $deleteStmt = $conn->prepare("DELETE FROM tweets WHERE parent_tweet_id = ? OR id = ?");
+            $deleteStmt->execute([$_POST['tweet_id'], $_POST['tweet_id']]);
+            header('Location: user.php'); // Keer terug naar de feed
+            exit();
+        } else {
+            die("Je hebt geen rechten om deze tweet te verwijderen.");
+        }
+    } catch (PDOException $e) {
+        die("Fout bij connectie: " . $e->getMessage());
+    }
+} else {
+    die("Ongeldig verzoek.");
 }
-
-// Database connectie
-try {
-    $conn = new PDO("mysql:host=localhost;dbname=login_system", "root", "", [
-        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
-    ]);
-} catch (PDOException $e) {
-    die("Connectiefout: " . $e->getMessage());
-}
-
-$tweet_id = (int) $_POST['tweet_id']; // Maak zeker dat tweet_id een integer is
-$user_id = (int) $_SESSION['user_id']; // Zorg dat user_id een integer is
-
-// Verifieer of de tweet van de ingelogde gebruiker is
-$stmt = $conn->prepare("SELECT id FROM tweets WHERE id = :tweet_id AND user_id = :user_id");
-$stmt->execute(['tweet_id' => $tweet_id, 'user_id' => $user_id]);
-$tweet = $stmt->fetch();
-
-if ($tweet) {
-    // Verwijder likes en retweets gekoppeld aan de tweet
-    $conn->prepare("DELETE FROM likes WHERE tweet_id = :tweet_id")->execute(['tweet_id' => $tweet_id]);
-    $conn->prepare("DELETE FROM retweets WHERE tweet_id = :tweet_id")->execute(['tweet_id' => $tweet_id]);
-
-    // Verwijder de tweet zelf
-    $conn->prepare("DELETE FROM tweets WHERE id = :tweet_id")->execute(['tweet_id' => $tweet_id]);
-}
-
-header('Location: user.php');
-exit();

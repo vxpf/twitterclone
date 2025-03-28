@@ -21,7 +21,7 @@ try {
     die("Connectiefout: " . $e->getMessage());
 }
 
-// Tweets ophalen, inclusief gebruikersgegevens en profielfoto's
+// Alleen hoofdtweets ophalen
 $stmt = $conn->prepare("
     SELECT 
         tweets.id AS tweet_id, 
@@ -35,6 +35,7 @@ $stmt = $conn->prepare("
         users.profile_picture
     FROM tweets
     INNER JOIN users ON tweets.user_id = users.id
+    WHERE tweets.parent_tweet_id IS NULL 
     ORDER BY tweets.created_at DESC
 ");
 $stmt->execute();
@@ -77,34 +78,53 @@ function tijdVerstreken($timestamp) {
     <link rel="stylesheet" href="user.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
-        /* Extra CSS voor bestand upload */
-        input[type="file"] {
-            display: none;
+        .time {
+            margin-left: 5px;
         }
 
-        .file-label {
-            display: inline-block;
-            padding: 10px 20px;
-            font-size: 14px;
-            background-color: #e8f5fe;
-            color: #14171a;
-            border: 2px solid #1da1f2;
-            border-radius: 25px;
+        .comments {
+            display: none; /* Reacties standaard verbergen */
+            margin-top: 10px;
+        }
+
+        .comment {
+            padding: 10px;
+            border-top: 1px solid #ddd;
+        }
+
+        .tweet-actions button {
+            background: none;
+            border: none;
             cursor: pointer;
-            transition: background-color 0.3s ease, border-color 0.3s ease;
+            color: #555;
+            font-size: 16px;
+            margin-right: 15px;
         }
 
-        .file-label:hover {
-            background-color: #1da1f2;
-            color: white;
-            border-color: #1a91da;
+        .tweet-actions button:hover {
+            color: #1da1f2; /* Twitter blauw */
         }
 
-        .file-label:active {
-            background-color: #0a85cc;
-            border-color: #086fa8;
+
+
+        .action-count {
+            font-size: 14px;
+            margin-left: 5px;
+        }
+
+        .tweet-avatar img,
+        .comment img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
         }
     </style>
+    <script>
+        function toggleComments(tweetId) {
+            const commentsDiv = document.getElementById('comments-' + tweetId);
+            commentsDiv.style.display = (commentsDiv.style.display === 'block') ? 'none' : 'block';
+        }
+    </script>
 </head>
 <body>
 <div class="twitter-container">
@@ -115,47 +135,40 @@ function tijdVerstreken($timestamp) {
             <h2>Chirpify</h2>
         </div>
         <nav class="sidebar-nav">
-        <a href="user.php" class="nav-item"> <i class="fa-sharp fa-solid fa-house" style="color: #000000;"></i>  Home</a>
-            <a href="profile.php" class="nav-item active"><i class="fa-sharp fa-solid fa-user" style="color: #000000;"></i>  Profile</a>
-            <a href="settings.php" class="nav-item"><i class="fa-solid fa-gear" style="color: #000000;"></i> Settings</a>
-            <a href="index.php" class="nav-item"><i class="fa-sharp fa-solid fa-right-from-bracket" style="color: #030303;"></i>Logout</a>
-            
+            <a href="user.php" class="nav-item"> <i class="fa-solid fa-house"></i> Home</a>
+            <a href="profile.php" class="nav-item"><i class="fa-solid fa-user"></i> Profile</a>
+            <a href="Settings.php" class="nav-item"><i class="fa-solid fa-gear"></i> Settings</a>
+            <a href="index.php" class="nav-item"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
         </nav>
     </aside>
 
     <!-- Hoofdsectie (Feed) -->
     <main class="feed">
-        <!-- Pagina Titel -->
         <header class="feed-header">
             <h1>Home</h1>
         </header>
 
-        <!-- Tweet-invoer -->
         <div class="tweet-box">
             <form action="post_tweet.php" method="POST" enctype="multipart/form-data">
                 <textarea name="content" placeholder="Wat gebeurt er?" rows="4" required></textarea>
                 <input type="file" name="image" id="file-upload" accept="image/*">
-                <label for="file-upload" class="file-label">Kies een bestand</label>
                 <button type="submit" class="post-btn">Tweet</button>
             </form>
         </div>
 
-        <!-- Tweet-lijst -->
         <div class="tweets">
             <?php if (!empty($tweets)): ?>
                 <?php foreach ($tweets as $tweet): ?>
                     <div class="tweet">
-                        <!-- Profielfoto van Gebruiker -->
                         <div class="tweet-avatar">
                             <img src="<?= htmlspecialchars(!empty($tweet['profile_picture']) ? $tweet['profile_picture'] : 'path/to/default-profile.png'); ?>"
                                  alt="Profielfoto van <?= htmlspecialchars($tweet['name']); ?>">
                         </div>
 
-                        <!-- Tweet Inhoud -->
                         <div class="tweet-content">
                             <div class="tweet-header">
                                 <span class="username"><?= htmlspecialchars($tweet['name']); ?></span>
-                                <span class="time"> • <?= tijdVerstreken($tweet['created_at']); ?></span>
+                                <span class="time"> <?= tijdVerstreken($tweet['created_at']); ?></span>
                             </div>
 
                             <p><?= htmlspecialchars($tweet['content']); ?></p>
@@ -164,8 +177,8 @@ function tijdVerstreken($timestamp) {
                                 <img src="<?= htmlspecialchars($tweet['image']); ?>" alt="Tweet afbeelding" class="tweet-image" style="max-width: 100%; height: auto;">
                             <?php endif; ?>
 
-                            <!-- Tweet Acties -->
                             <div class="tweet-actions">
+                                <!-- Like Button -->
                                 <form action="like_tweet.php" method="POST" style="display: inline-block;">
                                     <input type="hidden" name="tweet_id" value="<?= htmlspecialchars($tweet['tweet_id']); ?>">
                                     <?php
@@ -174,7 +187,8 @@ function tijdVerstreken($timestamp) {
                                     $isLiked = $stmt->rowCount() > 0;
                                     ?>
                                     <button type="submit" class="like-btn">
-                                        <?= $isLiked ? "💔 Unlike" : "❤️ Like"; ?> (<?= (int)$tweet['likes_count']; ?>)
+                                        <i class="<?= $isLiked ? 'fa-solid fa-heart' : 'fa-regular fa-heart'; ?>"></i>
+                                        <span class="action-count"><?= (int)$tweet['likes_count']; ?></span>
                                     </button>
                                 </form>
 
@@ -185,17 +199,78 @@ function tijdVerstreken($timestamp) {
                                     $stmt->execute([$_SESSION['user_id'], $tweet['tweet_id']]);
                                     $isRetweeted = $stmt->rowCount() > 0;
                                     ?>
-                                    <button type="submit" class="retweet-btn">
-                                        <?= $isRetweeted ? "⛔ Unretweet" : "🔁 Retweet"; ?> (<?= (int)$tweet['retweets_count']; ?>)
+                                    <button type="submit" class="retweet-btn <?= $isRetweeted ? 'active' : ''; ?>">
+                                        <i class="fa-solid fa-retweet"></i>
+                                        <span class="action-count"><?= (int)$tweet['retweets_count']; ?></span>
                                     </button>
                                 </form>
 
-                                <?php if ($_SESSION['user_id'] === $tweet['user_id']): ?>
+                                <!-- Comments Button -->
+                                <?php
+                                $commentCountStmt = $conn->prepare("SELECT COUNT(*) AS comment_count FROM tweets WHERE parent_tweet_id = ?");
+                                $commentCountStmt->execute([$tweet['tweet_id']]);
+                                $commentCount = $commentCountStmt->fetch()['comment_count'];
+                                ?>
+                                <button type="button" onclick="toggleComments(<?= htmlspecialchars($tweet['tweet_id']); ?>)" class="comment-btn">
+                                    <i class="fa-regular fa-comment"></i>
+                                    <span class="action-count"><?= (int)$commentCount; ?></span>
+                                </button>
+
+                                <!-- Delete Button -->
+                                <?php if ($tweet['user_id'] === $_SESSION['user_id']): ?>
                                     <form action="delete_tweet.php" method="POST" style="display: inline-block;">
                                         <input type="hidden" name="tweet_id" value="<?= htmlspecialchars($tweet['tweet_id']); ?>">
-                                        <button type="submit" class="delete-btn">❌ Verwijder</button>
+                                        <button type="submit" class="delete-btn">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
                                     </form>
                                 <?php endif; ?>
+                            </div>
+
+                            <div id="comments-<?= htmlspecialchars($tweet['tweet_id']); ?>" class="comments">
+                                <?php
+                                $replyStmt = $conn->prepare("
+                                    SELECT 
+                                        tweets.id AS comment_id, 
+                                        tweets.content, 
+                                        tweets.created_at,
+                                        users.name AS username, 
+                                        users.profile_picture,
+                                        users.id AS user_id
+                                    FROM tweets
+                                    INNER JOIN users ON tweets.user_id = users.id
+                                    WHERE tweets.parent_tweet_id = ?
+                                    ORDER BY tweets.created_at
+                                ");
+                                $replyStmt->execute([$tweet['tweet_id']]);
+                                $comments = $replyStmt->fetchAll();
+
+                                foreach ($comments as $comment): ?>
+                                    <div class="comment">
+                                        <div class="comment-avatar">
+                                            <img src="<?= htmlspecialchars(!empty($comment['profile_picture']) ? $comment['profile_picture'] : 'path/to/default-profile.png'); ?>"
+                                                 alt="Profielfoto van <?= htmlspecialchars($comment['username']); ?>">
+                                        </div>
+                                        <strong><?= htmlspecialchars($comment['username']); ?></strong>
+                                        <p><?= htmlspecialchars($comment['content']); ?></p>
+                                        <small><?= tijdVerstreken($comment['created_at']); ?></small>
+
+                                        <?php if ($comment['user_id'] === $_SESSION['user_id']): ?>
+                                            <form style="display:inline;" action="delete_comment.php" method="POST">
+                                                <input type="hidden" name="comment_id" value="<?= htmlspecialchars($comment['comment_id']); ?>">
+                                                <button type="submit" class="delete-btn">
+                                                    <i class="fa-solid fa-trash"></i>
+                                                </button>
+                                            </form>
+                                        <?php endif; ?>
+                                    </div>
+                                <?php endforeach; ?>
+
+                                <form action="post_comment.php" method="POST">
+                                    <textarea name="comment" placeholder="Schrijf een reactie..." rows="2" required></textarea>
+                                    <input type="hidden" name="tweet_id" value="<?= htmlspecialchars($tweet['tweet_id']); ?>">
+                                    <button type="submit">Plaats Reactie</button>
+                                </form>
                             </div>
                         </div>
                     </div>

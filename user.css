@@ -319,29 +319,6 @@ textarea {
   transition: all 0.3s;
 }
 
-.tweet-actions button:hover {
-  background-color: #1da1f2;
-  color: white;
-}
-
-.tweet-actions .retweet-btn {
-  background-color: #17bf63;
-  color: white;
-}
-
-.tweet-actions .retweet-btn:hover {
-  background-color: #15a556;
-}
-
-.tweet-actions .like-btn {
-  background-color: #e0245e;
-  color: white;
-}
-
-.tweet-actions .like-btn:hover {
-  background-color: #c61748;
-}
-
 
 /* Profile Edit Form Styling */
 .profile-edit-form {
@@ -514,6 +491,9 @@ textarea {
   margin-top: 10px;
   padding: 0 15px;
   line-height: 1.5;
+}
+.time {
+  margin-left: 15px;
 }
 
 .fa-solid fa-user-pencil-alt {

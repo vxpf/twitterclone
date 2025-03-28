@@ -84,17 +84,16 @@ p a {
 p a:hover{
     text-decoration: underline;
 }
-
 .error, .success {
-    padding: 12px;
-    border-radius: 6px;
-    text-align: center;
-    margin: 10px auto;
-    width: 90%;
-    max-width: 400px;
-    font-weight: bold;
-    transition: opacity 1s ease-in-out;
-}
+     padding: 12px;
+     border-radius: 6px;
+     text-align: center;
+     margin: 10px auto;
+     width: 90%;
+     max-width: 400px;
+     font-weight: bold;
+     transition: opacity 1s ease-in-out;
+ }
 
 .error {
     color: red;

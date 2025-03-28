@@ -54,8 +54,8 @@ $banner = !empty($user['banner']) ? $user['banner'] : "path/to/default-banner.jp
         </div>
         <nav class="sidebar-nav">
             <a href="user.php" class="nav-item"> <i class="fa-sharp fa-solid fa-house" style="color: #000000;"></i>  Home</a>
-            <a href="profile.php" class="nav-item active"><i class="fa-sharp fa-solid fa-user" style="color: #000000;"></i>  Profile</a>
-            <a href="settings.php" class="nav-item"><i class="fa-solid fa-gear" style="color: #000000;"></i> Settings</a>
+            <a href="profile.php" class="nav-item"><i class="fa-sharp fa-solid fa-user" style="color: #000000;"></i>  Profile</a>
+            <a href="Settings.php" class="nav-item"><i class="fa-solid fa-gear" style="color: #000000;"></i> Settings</a>
             <a href="index.php" class="nav-item"><i class="fa-sharp fa-solid fa-right-from-bracket" style="color: #030303;"></i>Logout</a>
             
         </nav>
@@ -70,12 +70,12 @@ $banner = !empty($user['banner']) ? $user['banner'] : "path/to/default-banner.jp
         <section class="profile-header">
             <!-- Banner -->
             <div class="profile-banner-container">
-                <img src="<?= htmlspecialchars($banner); ?>" alt="Banner afbeelding" class="profile-banner">
+                <img src="<?= htmlspecialchars($banner); ?>" alt="" class="profile-banner">
             </div>
 
             <!-- Profielfoto -->
             <div class="profile-picture">
-                <img src="<?= htmlspecialchars($profilePicture); ?>" alt="Profielfoto">
+                <img src="<?= htmlspecialchars($profilePicture); ?>" alt="">
             </div>
 
             <!-- Profiel informatie -->

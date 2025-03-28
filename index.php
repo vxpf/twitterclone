@@ -7,7 +7,6 @@
     <title>Login / Registreer</title>
     <link rel="stylesheet" href="index.css">
 </head>
-
 <body>
 
 <div class="container">

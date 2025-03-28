@@ -20,6 +20,7 @@ try {
 if (isset($_POST['content']) && !empty($_POST['content'])) {
     $content = $_POST['content'];
     $user_id = $_SESSION['user_id'];
+    $parent_tweet_id = !empty($_POST['parent_tweet_id']) ? $_POST['parent_tweet_id'] : null; // Voor comments
 
     // Controleer of er een afbeelding is geüpload
     $imagePath = null;
@@ -33,9 +34,9 @@ if (isset($_POST['content']) && !empty($_POST['content'])) {
         move_uploaded_file($imageTmpName, $imagePath);
     }
 
-    // Tweet met optioneel beeldbestand opslaan
-    $stmt = $conn->prepare("INSERT INTO tweets (content, user_id, image, created_at) VALUES (?, ?, ?, NOW())");
-    $stmt->execute([$content, $user_id, $imagePath]);
+    // Tweet of comment opslaan
+    $stmt = $conn->prepare("INSERT INTO tweets (content, user_id, image, parent_tweet_id, created_at) VALUES (?, ?, ?, ?, NOW())");
+    $stmt->execute([$content, $user_id, $imagePath, $parent_tweet_id]);
 
     header('Location: user.php'); // Keer terug naar de feed na het posten
     exit();
