@@ -19,24 +19,24 @@ $user_id = $_SESSION['user_id'];
 $tweet_id = isset($_POST['tweet_id']) ? (int)$_POST['tweet_id'] : null;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $tweet_id) {
-    // Controleer of de tweet al is geliket
+    // Check if the user has already liked this tweet
     $stmt = $conn->prepare("SELECT * FROM likes WHERE user_id = ? AND tweet_id = ?");
     $stmt->execute([$user_id, $tweet_id]);
 
     if ($stmt->rowCount() > 0) {
-        // Als de gebruiker al heeft geliket, verwijder like (unlike)
+        // If already liked, remove the like
         $stmt = $conn->prepare("DELETE FROM likes WHERE user_id = ? AND tweet_id = ?");
         $stmt->execute([$user_id, $tweet_id]);
 
-        // Verlaag het aantal likes in de tweets-tabel
+        // Decrease the like count in the original tweet
         $stmt = $conn->prepare("UPDATE tweets SET likes_count = likes_count - 1 WHERE id = ?");
         $stmt->execute([$tweet_id]);
     } else {
-        // Voeg een nieuwe like toe
+        // Add the like to the likes table
         $stmt = $conn->prepare("INSERT INTO likes (user_id, tweet_id) VALUES (?, ?)");
         $stmt->execute([$user_id, $tweet_id]);
 
-        // Verhoog het aantal likes in de tweets-tabel
+        // Increase the like count in the original tweet
         $stmt = $conn->prepare("UPDATE tweets SET likes_count = likes_count + 1 WHERE id = ?");
         $stmt->execute([$tweet_id]);
     }
@@ -48,3 +48,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $tweet_id) {
     header('Location: user.php');
     exit();
 }
+?>

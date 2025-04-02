@@ -4,18 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e1342e43-099d-4e5b-a0cb-a8458f3679ad" name="Changes" comment="relatief tijd, profiel foto kunne toepassen plus opslaan in de database. wanneer je iets tweet komt je profiel foto ook bij de tweet">
-      <change afterPath="$PROJECT_DIR$/delete_comment.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/post_comment.php" afterDir="false" />
+    <list default="true" id="e1342e43-099d-4e5b-a0cb-a8458f3679ad" name="Changes" comment="Fa fonts gevoegd bij mijn tweet sectie, begonnen aan het werken van mijn admin pagina, comments functie plaatsen en hetk unnen verwijderen en opslaan ja en paar styling fixen">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Settings.php" beforeDir="false" afterPath="$PROJECT_DIR$/Settings.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/delete_tweet.php" beforeDir="false" afterPath="$PROJECT_DIR$/delete_tweet.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/index.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/index.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/post_tweet.php" beforeDir="false" afterPath="$PROJECT_DIR$/post_tweet.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/profile.php" beforeDir="false" afterPath="$PROJECT_DIR$/profile.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user.css" beforeDir="false" afterPath="$PROJECT_DIR$/user.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/retweet_tweet.php" beforeDir="false" afterPath="$PROJECT_DIR$/retweet_tweet.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/user.php" beforeDir="false" afterPath="$PROJECT_DIR$/user.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -82,8 +73,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-76f8388c3a79-JavaScript-PS-243.24978.50" />
-        <option value="bundled-php-predefined-a98d8de5180a-fbeb0b58ac0f-com.jetbrains.php.sharedIndexes-PS-243.24978.50" />
+        <option value="bundled-js-predefined-d6986cc7102b-1632447f56bf-JavaScript-PS-243.26053.13" />
+        <option value="bundled-php-predefined-a98d8de5180a-1ec7b7818973-com.jetbrains.php.sharedIndexes-PS-243.26053.13" />
       </set>
     </attachedChunks>
   </component>
@@ -110,7 +101,9 @@
       <workItem from="1742302632161" duration="1553000" />
       <workItem from="1742389797933" duration="9963000" />
       <workItem from="1742906783054" duration="15536000" />
-      <workItem from="1743147363332" duration="3527000" />
+      <workItem from="1743147363332" duration="6688000" />
+      <workItem from="1743465771694" duration="11000" />
+      <workItem from="1743491279944" duration="26000" />
     </task>
     <task id="LOCAL-00001" summary="Nieuw">
       <option name="closed" value="true" />
@@ -280,7 +273,15 @@
       <option name="project" value="LOCAL" />
       <updated>1742979419195</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="Fa fonts gevoegd bij mijn tweet sectie, begonnen aan het werken van mijn admin pagina, comments functie plaatsen en hetk unnen verwijderen en opslaan ja en paar styling fixen">
+      <option name="closed" value="true" />
+      <created>1743159075746</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1743159075746</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -303,6 +304,7 @@
     <MESSAGE value="Files voegen" />
     <MESSAGE value="Settings css fix" />
     <MESSAGE value="relatief tijd, profiel foto kunne toepassen plus opslaan in de database. wanneer je iets tweet komt je profiel foto ook bij de tweet" />
-    <option name="LAST_COMMIT_MESSAGE" value="relatief tijd, profiel foto kunne toepassen plus opslaan in de database. wanneer je iets tweet komt je profiel foto ook bij de tweet" />
+    <MESSAGE value="Fa fonts gevoegd bij mijn tweet sectie, begonnen aan het werken van mijn admin pagina, comments functie plaatsen en hetk unnen verwijderen en opslaan ja en paar styling fixen" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fa fonts gevoegd bij mijn tweet sectie, begonnen aan het werken van mijn admin pagina, comments functie plaatsen en hetk unnen verwijderen en opslaan ja en paar styling fixen" />
   </component>
 </project>

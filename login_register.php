@@ -15,23 +15,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = isset($_POST['password']) ? $_POST['password'] : '';
 
     if (isset($_POST['register'])) {
-
+        // Registratie
         $name = isset($_POST['name']) ? trim($_POST['name']) : '';
         $role = isset($_POST['role']) ? $_POST['role'] : '';
 
         if (!$name || !$email || !$password || $role !== 'User') {
             $_SESSION['error'] = "Ongeldige invoer!";
         } else {
+            // Controleer of de e-mail of naam al bestaat
             $stmt = $conn->prepare("SELECT id FROM users WHERE email = ? OR name = ?");
             $stmt->execute([$email, $name]);
 
             if ($stmt->rowCount() > 0) {
                 $_SESSION['error'] = "Naam of e-mail in gebruik!";
             } else {
+                // Hash het wachtwoord
                 $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
+                // Voeg de gebruiker toe aan de database
                 $stmt = $conn->prepare("
-                    INSERT INTO users (name, email, password, role, bio) 
-                    VALUES (?, ?, ?, ?, '')
+                    INSERT INTO users (name, email, password, role) 
+                    VALUES (?, ?, ?, ?)
                 ");
                 $stmt->execute([$name, $email, $hashed_password, $role]);
                 $_SESSION['success'] = "Registratie succesvol!";
@@ -39,28 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    if (isset($_POST['login'])) {
-        // Login
-        $stmt = $conn->prepare("
-            SELECT id, name, password, role, bio 
-            FROM users WHERE email = ?
-        ");
-        $stmt->execute([$email]);
-        $user = $stmt->fetch();
-
-        if ($user && password_verify($password, $user['password'])) {
-            $_SESSION = [
-                'user_id' => $user['id'],
-                'user_name' => $user['name'],
-                'bio' => $user['bio']
-            ];
-            header("Location: user.php");
-            exit();
-        } else {
-            $_SESSION['error'] = "Ongeldig e-mailadres of wachtwoord!";
-        }
-    }
-
     header("Location: index.php");
     exit();
 }
+?>
