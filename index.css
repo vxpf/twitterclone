@@ -16,7 +16,12 @@ body{
 }
 
 .container{
-    margin: 0 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Zorg ervoor dat de container de volledige hoogte van de pagina gebruikt */
+    margin: 0 auto; /* Centreer de container horizontaal */
 }
 
 .form-box{
@@ -106,3 +111,31 @@ p a:hover{
     background-color: #ccffcc;
     border: 1px solid green;
 }
+
+.info-link {
+    color: #7494ec;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.info-link:hover {
+    text-decoration: underline;
+    color: #6884d3;
+}
+
+.back-link {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #7494ec;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.back-link:hover {
+    background-color: #6884d3;
+}
+
+

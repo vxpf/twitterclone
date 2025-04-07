@@ -55,12 +55,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login / Registreer</title>
+    <title>Chirpify Login / Registreer</title>
     <link rel="stylesheet" href="index.css">
 </head>
 <body>
 
 <div class="container">
+
 
     <?php if (isset($_SESSION['error'])): ?>
         <div class="error"><?php echo $_SESSION['error']; unset($_SESSION['error']); ?></div>
@@ -86,6 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
             <input type="password" name="password" placeholder="Wachtwoord" required>
             <button type="submit" name="login">Login</button>
             <p>Heb je nog geen account? <a href="#" onclick="showForm('register-form')">Registreer</a></p>
+            <p><a href="about.php" class="info-link">Meer weten over Chirpify?</a></p>
         </form>
     </div>
 

@@ -209,41 +209,52 @@ textarea {
 
 .file-actions {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end; /* Plaats beide knoppen aan de rechterkant */
+  gap: 10px; /* Ruimte tussen de knoppen */
   margin-top: 10px;
 }
 
+/* Bestand kiezen-knop */
 .file-label {
   display: inline-block;
-  padding: 8px 15px;
-  font-size: 14px;
-  background-color: #e8f5fe;
-  color: #14171a;
-  border: 2px solid #1da1f2;
-  border-radius: 25px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, border-color 0.3s ease;
-}
-
-.file-label:hover {
-  background-color: #1da1f2;
-  color: white;
-  border-color: #1a91da;
-}
-
-.post-btn {
+  padding: 10px 20px;
+  font-size: 13px;
   background-color: #1da1f2;
   color: white;
   border: none;
-  padding: 8px 15px;
-  border-radius: 25px;
-  font-size: 16px;
+  border-radius: 21px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  text-align: center;
+}
+
+.file-label:hover {
+  background-color: #1a91da;
+  transform: scale(1.05);
+}
+
+#file-upload {
+  display: none; /* Verberg de standaard bestand kiezen-knop */
+}
+
+/* Tweet-knop */
+.post-btn {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 14px;
+  background-color: #1da1f2;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  text-align: center;
+  float: right; /* Plaats de knop aan de rechterkant */
 }
 
 .post-btn:hover {
   background-color: #1a91da;
+  transform: scale(1.05); /* Voeg een lichte vergroting toe bij hover */
 }
 
 /* Tweets */
@@ -303,7 +314,8 @@ textarea {
 
 .tweet-actions {
   display: flex;
-  gap: 15px;
+  gap: 30px; /* Voeg ruimte tussen de knoppen toe */
+  align-items: center; /* Zorg dat de knoppen netjes uitgelijnd zijn */
 }
 
 .tweet-actions button {
@@ -499,4 +511,107 @@ textarea {
 .fa-solid fa-user-pencil-alt {
   color: #000000;
   margin-left: 5px;
+}
+
+/* Plaats Reactie-knop */
+.comment-form button {
+  background-color: #1da1f2;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 25px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  margin-top: 10px;
+}
+
+.comment-form button:hover {
+  background-color: #1a91da;
+  transform: scale(1.05);
+}
+ /* Retweet-knop standaard */
+ .retweet-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #657786; /* Grijze kleur voor niet-geretweete tweets */
+  font-size: 16px;
+  transition: color 0.3s ease, transform 0.2s ease;
+}
+
+/* Retweet-knop actief (groen) */
+.retweet-btn.active {
+  color: #28a745; /* Groene kleur voor geretweete tweets */
+}
+
+.retweet-btn:hover {
+  transform: scale(1.1); /* Lichte vergroting bij hover */
+}
+/* Verwijderknop (Delete Button) */
+.delete-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #dc3545; /* Rode kleur voor verwijderen */
+  font-size: 16px;
+  transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.delete-btn:hover {
+  color: #a71d2a; /* Donkerdere rode kleur bij hover */
+  transform: scale(1.1); /* Lichte vergroting bij hover */
+}
+/* Like-knop standaard */
+.like-btn {
+  position: relative;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #657786; /* Grijze kleur voor niet-gelikete tweets */
+  font-size: 16px;
+  transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.like-btn:hover::after {
+  content: attr(title);
+  position: absolute;
+  bottom: 125%; /* Plaats de tooltip boven de knop */
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 10;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.3s ease;
+}
+
+.like-btn:hover {
+  transform: scale(1.1); /* Lichte vergroting bij hover */
+  cursor: pointer;
+}
+
+.like-btn::after {
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* Like-knop actief (rood) */
+.like-btn.active {
+  color: #e0245e; /* Rode kleur voor gelikete tweets */
+}
+.retweet-info {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 5px;
+  font-style: italic;
+}
+.retweet-btn.active {
+  color: #1da1f2; /* Twitter blauw */
+  font-weight: bold;
 }

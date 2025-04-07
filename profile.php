@@ -33,6 +33,31 @@ $bio = !empty($user['bio']) ? $user['bio'] : ""; // Fallback bio
 // Standaardwaarden voor profielfoto en banner instellen
 $profilePicture = !empty($user['profile_picture']) ? $user['profile_picture'] : "path/to/default-profile.png";
 $banner = !empty($user['banner']) ? $user['banner'] : "path/to/default-banner.jpg";
+
+// Haal tweets van de gebruiker op
+$stmt = $conn->prepare("
+    SELECT 
+        tweets.id AS tweet_id, 
+        tweets.content, 
+        tweets.image, 
+        tweets.created_at, 
+        tweets.likes_count, 
+        users.id AS user_id, 
+        users.name, 
+        users.profile_picture
+    FROM tweets
+    INNER JOIN users ON tweets.user_id = users.id
+    WHERE tweets.user_id = :user_id
+    ORDER BY tweets.created_at DESC
+");
+$stmt->execute([':user_id' => $_SESSION['user_id']]);
+$tweets = $stmt->fetchAll();
+
+// Tijd-verstreken functie
+function tijdVerstreken($timestamp) {
+    // Formatteer de datum en tijd in een leesbaar formaat
+    return date("d-m-Y H:i", strtotime($timestamp)); // Bijvoorbeeld: 03-04-2025 14:30
+}
 ?>
 
 <!DOCTYPE html>
@@ -90,6 +115,32 @@ $banner = !empty($user['banner']) ? $user['banner'] : "path/to/default-banner.jp
                 <p class="profile-bio"><?= htmlspecialchars(!empty($bio) ? $bio : "Deze gebruiker heeft nog geen bio."); ?></p>
             </div>
         </section>
+
+        <div class="tweets">
+            <?php if (!empty($tweets)): ?>
+                <?php foreach ($tweets as $tweet): ?>
+                    <div class="tweet">
+                        <div class="tweet-avatar">
+                            <img src="<?= htmlspecialchars($tweet['profile_picture']); ?>" 
+                                 alt="Profile Picture">
+                        </div>
+
+                        <div class="tweet-content">
+                            <div class="tweet-header">
+                                <span class="username"><?= htmlspecialchars($tweet['name']); ?></span>
+                                <span class="time"><?= tijdVerstreken($tweet['created_at']); ?></span>
+                            </div>
+                            <p><?= htmlspecialchars($tweet['content']); ?></p>
+                            <?php if (!empty($tweet['image'])): ?>
+                                <img src="<?= htmlspecialchars($tweet['image']); ?>" alt="Tweet Image" class="tweet-image">
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <p>Geen tweets gevonden.</p>
+            <?php endif; ?>
+        </div>
     </main>
 </div>
 </body>

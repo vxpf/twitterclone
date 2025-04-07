@@ -2,11 +2,11 @@
 session_start();
 
 if (!isset($_SESSION['user_id'])) {
-    header('Location: index.php'); // Stuur niet-ingelogde gebruikers naar de loginpagina
+    header('Location: index.php'); // Redirect non-logged-in users to the login page
     exit();
 }
 
-// Databaseconnectie
+// Database connection
 try {
     $conn = new PDO(
         "mysql:host=localhost;dbname=login_system",
@@ -18,18 +18,17 @@ try {
         ]
     );
 } catch (PDOException $e) {
-    die("Connectiefout: " . $e->getMessage());
+    die("Connection error: " . $e->getMessage());
 }
 
-// Alleen hoofdtweets ophalen
+// Fetch tweets
 $stmt = $conn->prepare("
     SELECT 
         tweets.id AS tweet_id, 
         tweets.content, 
         tweets.image, 
         tweets.created_at, 
-        tweets.likes_count, 
-        tweets.retweets_count,
+        tweets.likes_count,  
         users.id AS user_id, 
         users.name, 
         users.profile_picture
@@ -41,30 +40,21 @@ $stmt = $conn->prepare("
 $stmt->execute();
 $tweets = $stmt->fetchAll();
 
-// Tijd-verstreken functie
+// Time elapsed function
 function tijdVerstreken($timestamp) {
-    $verstrekenTijd = time() - strtotime($timestamp);
+    $time = strtotime($timestamp);
+    $timeDifference = time() - $time;
 
-    if ($verstrekenTijd < 60) {
-        return $verstrekenTijd . " seconde" . ($verstrekenTijd > 1 ? "n" : "") . " geleden";
-    } elseif ($verstrekenTijd < 3600) {
-        $minuten = floor($verstrekenTijd / 60);
-        return $minuten . " minuut" . ($minuten > 1 ? "en" : "") . " geleden";
-    } elseif ($verstrekenTijd < 86400) {
-        $uren = floor($verstrekenTijd / 3600);
-        return $uren . " uur" . ($uren > 1 ? "en" : "") . " geleden";
-    } elseif ($verstrekenTijd < 604800) {
-        $dagen = floor($verstrekenTijd / 86400);
-        return $dagen . " dag" . ($dagen > 1 ? "en" : "") . " geleden";
-    } elseif ($verstrekenTijd < 2592000) {
-        $weken = floor($verstrekenTijd / 604800);
-        return $weken . " week" . ($weken > 1 ? "en" : "") . " geleden";
-    } elseif ($verstrekenTijd < 31557600) {
-        $maanden = floor($verstrekenTijd / 2592000);
-        return $maanden . " maand" . ($maanden > 1 ? "en" : "") . " geleden";
+    if ($timeDifference < 60) {
+        return $timeDifference . ' seconds ago';
+    } elseif ($timeDifference < 3600) {
+        return floor($timeDifference / 60) . ' minutes ago';
+    } elseif ($timeDifference < 86400) {
+        return floor($timeDifference / 3600) . ' hours ago';
+    } elseif ($timeDifference < 604800) {
+        return floor($timeDifference / 86400) . ' days ago';
     } else {
-        $jaren = floor($verstrekenTijd / 31557600);
-        return $jaren . " jaar" . ($jaren > 1 ? "en" : "") . " geleden";
+        return date('d M Y', $time);
     }
 }
 ?>
@@ -83,7 +73,7 @@ function tijdVerstreken($timestamp) {
         }
 
         .comments {
-            display: none; /* Reacties standaard verbergen */
+            display: none; /* Hide comments by default */
             margin-top: 10px;
         }
 
@@ -102,10 +92,8 @@ function tijdVerstreken($timestamp) {
         }
 
         .tweet-actions button:hover {
-            color: #1da1f2; /* Twitter blauw */
+            color: #1da1f2; /* Twitter blue */
         }
-
-
 
         .action-count {
             font-size: 14px;
@@ -142,7 +130,7 @@ function tijdVerstreken($timestamp) {
         </nav>
     </aside>
 
-    <!-- Hoofdsectie (Feed) -->
+    <!-- Main Section (Feed) -->
     <main class="feed">
         <header class="feed-header">
             <h1>Home</h1>
@@ -150,8 +138,12 @@ function tijdVerstreken($timestamp) {
 
         <div class="tweet-box">
             <form action="post_tweet.php" method="POST" enctype="multipart/form-data">
-                <textarea name="content" placeholder="Wat gebeurt er?" rows="4" required></textarea>
+                <textarea name="content" placeholder="What's happening?" rows="4" required></textarea>
+                
+                <!-- File upload button -->
+                <label for="file-upload" class="file-label">Choose File</label>
                 <input type="file" name="image" id="file-upload" accept="image/*">
+                
                 <button type="submit" class="post-btn">Tweet</button>
             </form>
         </div>
@@ -159,10 +151,24 @@ function tijdVerstreken($timestamp) {
         <div class="tweets">
             <?php if (!empty($tweets)): ?>
                 <?php foreach ($tweets as $tweet): ?>
+                    <?php
+                    // Fetch users who liked the tweet
+                    $likeUsersStmt = $conn->prepare("
+                        SELECT users.name 
+                        FROM likes 
+                        INNER JOIN users ON likes.user_id = users.id 
+                        WHERE likes.tweet_id = ?
+                    ");
+                    $likeUsersStmt->execute([$tweet['tweet_id']]);
+                    $likeUsers = $likeUsersStmt->fetchAll(PDO::FETCH_COLUMN);
+
+                    // Check if there are likes and create a list of names
+                    $likeUsersList = !empty($likeUsers) ? implode(', ', $likeUsers) : 'No likes yet';
+                    ?>
                     <div class="tweet">
                         <div class="tweet-avatar">
                             <img src="<?= htmlspecialchars(!empty($tweet['profile_picture']) ? $tweet['profile_picture'] : 'path/to/default-profile.png'); ?>"
-                                 alt="Profielfoto van <?= htmlspecialchars($tweet['name']); ?>">
+                                 alt="Profile picture of <?= htmlspecialchars($tweet['name']); ?>">
                         </div>
 
                         <div class="tweet-content">
@@ -174,7 +180,7 @@ function tijdVerstreken($timestamp) {
                             <p><?= htmlspecialchars($tweet['content']); ?></p>
 
                             <?php if (!empty($tweet['image'])): ?>
-                                <img src="<?= htmlspecialchars($tweet['image']); ?>" alt="Tweet afbeelding" class="tweet-image" style="max-width: 100%; height: auto;">
+                                <img src="<?= htmlspecialchars($tweet['image']); ?>" alt="Tweet image" class="tweet-image" style="max-width: 100%; height: auto;">
                             <?php endif; ?>
 
                             <div class="tweet-actions">
@@ -186,24 +192,17 @@ function tijdVerstreken($timestamp) {
                                     $stmt->execute([$_SESSION['user_id'], $tweet['tweet_id']]);
                                     $isLiked = $stmt->rowCount() > 0;
                                     ?>
-                                    <button type="submit" class="like-btn">
-                                        <i class="<?= $isLiked ? 'fa-solid fa-heart' : 'fa-regular fa-heart'; ?>"></i>
+                                    <button type="submit" class="like-btn <?= $isLiked ? 'active' : ''; ?>" title="<?= htmlspecialchars($likeUsersList); ?>">
+                                        <?php if ($isLiked): ?>
+                                            <i class="fa-solid fa-heart"></i> <!-- Full heart for liked tweets -->
+                                        <?php else: ?>
+                                            <i class="fa-regular fa-heart"></i> <!-- Empty heart for unliked tweets -->
+                                        <?php endif; ?>
                                         <span class="action-count"><?= (int)$tweet['likes_count']; ?></span>
                                     </button>
                                 </form>
 
-                                <form action="retweet_tweet.php" method="POST" style="display: inline-block;">
-                                    <input type="hidden" name="tweet_id" value="<?= htmlspecialchars($tweet['tweet_id']); ?>">
-                                    <?php
-                                    $stmt = $conn->prepare("SELECT * FROM retweets WHERE user_id = ? AND tweet_id = ?");
-                                    $stmt->execute([$_SESSION['user_id'], $tweet['tweet_id']]);
-                                    $isRetweeted = $stmt->rowCount() > 0;
-                                    ?>
-                                    <button type="submit" class="retweet-btn <?= $isRetweeted ? 'active' : ''; ?>">
-                                        <i class="fa-solid fa-retweet"></i>
-                                        <span class="action-count"><?= (int)$tweet['retweets_count']; ?></span>
-                                    </button>
-                                </form>
+                
 
                                 <!-- Comments Button -->
                                 <?php
@@ -249,7 +248,7 @@ function tijdVerstreken($timestamp) {
                                     <div class="comment">
                                         <div class="comment-avatar">
                                             <img src="<?= htmlspecialchars(!empty($comment['profile_picture']) ? $comment['profile_picture'] : 'path/to/default-profile.png'); ?>"
-                                                 alt="Profielfoto van <?= htmlspecialchars($comment['username']); ?>">
+                                                 alt="Profile picture of <?= htmlspecialchars($comment['username']); ?>">
                                         </div>
                                         <strong><?= htmlspecialchars($comment['username']); ?></strong>
                                         <p><?= htmlspecialchars($comment['content']); ?></p>
@@ -266,17 +265,17 @@ function tijdVerstreken($timestamp) {
                                     </div>
                                 <?php endforeach; ?>
 
-                                <form action="post_comment.php" method="POST">
-                                    <textarea name="comment" placeholder="Schrijf een reactie..." rows="2" required></textarea>
+                                <form action="post_comment.php" method="POST" class="comment-form">
+                                    <textarea name="comment" placeholder="Write a comment..." rows="2" required></textarea>
                                     <input type="hidden" name="tweet_id" value="<?= htmlspecialchars($tweet['tweet_id']); ?>">
-                                    <button type="submit">Plaats Reactie</button>
+                                    <button type="submit">Post Comment</button>
                                 </form>
                             </div>
                         </div>
                     </div>
                 <?php endforeach; ?>
             <?php else: ?>
-                <p>Geen tweets gevonden.</p>
+                <p>No tweets found.</p>
             <?php endif; ?>
         </div>
     </main>
