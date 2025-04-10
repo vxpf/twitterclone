@@ -358,7 +358,6 @@ textarea {
   display: block;
   font-size: 16px;
   font-weight: 600;
-  color: #14171a;
   margin-bottom: 8px;
 }
 
@@ -479,9 +478,9 @@ textarea {
   border-radius: 50%; /* Zorg dat de afbeelding rond blijft */
 }
 
-/* Profiel informatie styling */
+
 .profile-info {
-  margin-top: 50px; /* Voeg ruimte toe onder de overlappende foto */
+  margin-top: 50px; 
 }
 
 .profile-name {

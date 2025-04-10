@@ -117,7 +117,7 @@ function tijdVerstreken($timestamp) {
 <body>
 <div class="twitter-container">
 
-    <!-- Sidebar -->
+
     <aside class="sidebar">
         <div class="logo">
             <h2>Chirpify</h2>
@@ -140,10 +140,10 @@ function tijdVerstreken($timestamp) {
             <form action="post_tweet.php" method="POST" enctype="multipart/form-data">
                 <textarea name="content" placeholder="What's happening?" rows="4" required></textarea>
                 
-                <!-- File upload button -->
-                <label for="file-upload" class="file-label">Choose File</label>
-                <input type="file" name="image" id="file-upload" accept="image/*">
                 
+                <input type="file" id="file-upload" name="file" style="display: none;">
+                <label for="file-upload" class="file-label">Choose File</label>
+
                 <button type="submit" class="post-btn">Tweet</button>
             </form>
         </div>
@@ -266,7 +266,7 @@ function tijdVerstreken($timestamp) {
                                 <?php endforeach; ?>
 
                                 <form action="post_comment.php" method="POST" class="comment-form">
-                                    <textarea name="comment" placeholder="Write a comment..." rows="2" required></textarea>
+                                    <textarea name="comment" placeholder="Post your reply" rows="2" required></textarea>
                                     <input type="hidden" name="tweet_id" value="<?= htmlspecialchars($tweet['tweet_id']); ?>">
                                     <button type="submit">Post Comment</button>
                                 </form>

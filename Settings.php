@@ -36,7 +36,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = htmlspecialchars(trim($_POST['name']));
     $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
     $bio = htmlspecialchars(trim($_POST['bio']));
-    $password = !empty($_POST['password']) ? password_hash($_POST['password'], PASSWORD_DEFAULT) : null;
+    $old_password_input = !empty($_POST['old_password']) ? $_POST['old_password'] : null;
+    $new_password_input = !empty($_POST['password']) ? $_POST['password'] : null;
+    $password_update_params = null; // To store password update details if valid
+    $password_error = null; // To store any password-related errors
+
+    // --- Password Change Logic ---
+    if ($new_password_input) { // User wants to change password
+        if (!$old_password_input) {
+            $password_error = "Old password is required to set a new password.";
+        } else {
+            // Fetch current password hash
+            $stmt = $conn->prepare("SELECT password FROM users WHERE id = :user_id");
+            $stmt->execute([':user_id' => $user_id]);
+            $user_data = $stmt->fetch();
+
+            if ($user_data && password_verify($old_password_input, $user_data['password'])) {
+                // Old password is correct, hash the new one
+                $hashed_new_password = password_hash($new_password_input, PASSWORD_DEFAULT);
+                $password_update_params = [ // Store for later inclusion in query
+                    'column' => 'password',
+                    'value' => $hashed_new_password
+                ];
+            } else {
+                $password_error = "Old password incorrect.";
+            }
+        }
+    }
+    // --- End Password Change Logic ---
 
     // Uploadfolders (zorg dat deze mappen bestaan met de juiste schrijfrechten)
     $uploadDir = "uploads/";
@@ -66,47 +93,56 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     try {
-        // Bouw de `UPDATE`-query op
-        $query = "UPDATE users SET name = :name, email = :email, bio = :bio";
-        $params = [
-            ':name' => $name,
-            ':email' => $email,
-            ':bio' => $bio,
-        ];
+        // Only proceed with DB update if there wasn't a password error
+        if ($password_error === null) {
+            // Bouw de `UPDATE`-query op
+            $query = "UPDATE users SET name = :name, email = :email, bio = :bio";
+            $params = [
+                ':name' => $name,
+                ':email' => $email,
+                ':bio' => $bio,
+            ];
 
-        // Voeg de profielfoto toe aan de query als die werd gewijzigd
-        if ($profilePicture !== $_SESSION['profile_picture']) {
-            $query .= ", profile_picture = :profile_picture";
-            $params[':profile_picture'] = $profilePicture;
+            // Voeg de profielfoto toe aan de query als die werd gewijzigd
+            if ($profilePicture !== $_SESSION['profile_picture']) {
+                $query .= ", profile_picture = :profile_picture";
+                $params[':profile_picture'] = $profilePicture;
+            }
+
+            // Voeg de banner toe aan de query als die werd gewijzigd
+            if ($banner !== $_SESSION['banner']) {
+                $query .= ", banner = :banner";
+                $params[':banner'] = $banner;
+            }
+
+            // Voeg het wachtwoord toe aan de query als die is gevalideerd en klaar is voor update
+            if ($password_update_params) {
+                $query .= ", " . $password_update_params['column'] . " = :password";
+                $params[':password'] = $password_update_params['value'];
+            }
+
+            $query .= " WHERE id = :user_id";
+            $params[':user_id'] = $user_id;
+
+            // Voer de query uit
+            $stmt = $conn->prepare($query);
+            $stmt->execute($params);
+
+            // Update de sessievariabelen na een succesvolle update
+            $_SESSION['user_name'] = $name;
+            $_SESSION['bio'] = $bio;
+            $_SESSION['profile_picture'] = $profilePicture;
+            $_SESSION['banner'] = $banner;
+
+            // Succesbericht
+            $message = "Je instellingen zijn met succes opgeslagen!";
+        } else {
+            // Set the main message to the password error if one occurred
+            $message = $password_error;
+            // Optional: Reset profile picture/banner changes if password update failed?
+            // $profilePicture = $_SESSION['profile_picture']; // Revert to original session value
+            // $banner = $_SESSION['banner']; // Revert to original session value
         }
-
-        // Voeg de banner toe aan de query als die werd gewijzigd
-        if ($banner !== $_SESSION['banner']) {
-            $query .= ", banner = :banner";
-            $params[':banner'] = $banner;
-        }
-
-        // Voeg het wachtwoord toe aan de query als die is ingevuld
-        if ($password) {
-            $query .= ", password = :password";
-            $params[':password'] = $password;
-        }
-
-        $query .= " WHERE id = :user_id";
-        $params[':user_id'] = $user_id;
-
-        // Voer de query uit
-        $stmt = $conn->prepare($query);
-        $stmt->execute($params);
-
-        // Update de sessievariabelen na een succesvolle update
-        $_SESSION['user_name'] = $name;
-        $_SESSION['bio'] = $bio;
-        $_SESSION['profile_picture'] = $profilePicture;
-        $_SESSION['banner'] = $banner;
-
-        // Succesbericht
-        $message = "Je instellingen zijn met succes opgeslagen!";
     } catch (PDOException $e) {
         $message = "Er is een fout opgetreden: " . $e->getMessage();
     }
@@ -146,6 +182,10 @@ if (!$user) {
         .message.hidden {
             opacity: 0;
         }
+
+        .file-label {
+            color: white; /* Change text color to white */
+        }
     </style>
 </head>
 <body>
@@ -158,7 +198,7 @@ if (!$user) {
             <a href="user.php" class="nav-item"> <i class="fa-sharp fa-solid fa-house" style="color: #000000;"></i>  Home</a>
             <a href="profile.php" class="nav-item"><i class="fa-sharp fa-solid fa-user" style="color: #000000;"></i>  Profile</a>
             <a href="Settings.php" class="nav-item"><i class="fa-solid fa-gear" style="color: #000000;"></i> Settings</a>
-            <a href="index.php" class="nav-item"><i class="fa-sharp fa-solid fa-right-from-bracket" style="color: #030303;"></i>Logout</a>
+            <a href="index.php" class="nav-item"><i class="fa-sharp fa-solid fa-right-from-bracket" style="color: #030303;"></i> Logout</a>
         </nav>
     </aside>
 
@@ -187,19 +227,23 @@ if (!$user) {
                     <textarea id="bio" name="bio"><?= htmlspecialchars($user['bio']); ?></textarea>
                 </div>
                 <div class="form-group">
-                    <label for="password">Nieuw Wachtwoord</label>
+                    <label for="old_password">Old password</label>
+                    <input type="password" id="old_password" name="old_password">
+                </div>
+                <div class="form-group">
+                    <label for="password">New password</label>
                     <input type="password" id="password" name="password">
                 </div>
                 <div class="form-group">
-                    <label for="profile_picture">Profielfoto</label>
-                    <input type="file" id="profile_picture" name="profile_picture" accept="image/*">
+                    <label for="profile_picture" class="file-label">Choose File</label>
+                    <input type="file" id="profile_picture" name="profile_picture" accept="image/*" style="display: none;">
                     <?php if (!empty($user['profile_picture'])): ?>
                         <img src="<?= htmlspecialchars($user['profile_picture']); ?>" alt="Profielfoto" style="width: 100px;">
                     <?php endif; ?>
                 </div>
                 <div class="form-group">
-                    <label for="banner">Banner</label>
-                    <input type="file" id="banner" name="banner" accept="image/*">
+                    <label for="banner" class="file-label">Choose File</label>
+                    <input type="file" id="banner" name="banner" accept="image/*" style="display: none;">
                     <?php if (!empty($user['banner'])): ?>
                         <img src="<?= htmlspecialchars($user['banner']); ?>" alt="Banner" style="width: 100%; max-width: 300px;">
                     <?php endif; ?>

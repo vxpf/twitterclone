@@ -34,9 +34,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
             $_SESSION['is_admin'] = $user['is_admin'];
 
             if ($user['is_admin'] == 1) {
-                header('Location: admin.php'); // Redirect naar admin dashboard
+                header('Location: admin.php'); 
             } else {
-                header('Location: user.php'); // Redirect naar user dashboard
+                header('Location: user.php'); 
             }
             exit();
         } else {
