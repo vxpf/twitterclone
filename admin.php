@@ -1,9 +1,18 @@
 <?php
 session_start();
-if (!isset($_SESSION['user_id']) || $_SESSION['is_admin'] != 1) {
-    die("Toegang geweigerd. Alleen beheerders hebben toegang tot deze pagina.");
+
+// Check if user is logged in and is admin
+if (!isset($_SESSION['user_id']) || !isset($_SESSION['is_admin']) || !$_SESSION['is_admin']) {
+    header('Location: index.php');
+    exit();
 }
 
+// Initialize dark mode session variable if not set
+if (!isset($_SESSION['dark_mode'])) {
+    $_SESSION['dark_mode'] = 0; // Default to light mode for admin if not set via user settings
+}
+
+// Database connection
 try {
     $conn = new PDO(
         "mysql:host=localhost;dbname=login_system",
@@ -83,6 +92,7 @@ $tweets = $conn->query("
         tweets.id AS tweet_id, 
         tweets.content, 
         tweets.created_at, 
+        tweets.image,  
         users.name AS username 
     FROM tweets 
     INNER JOIN users ON tweets.user_id = users.id
@@ -121,9 +131,10 @@ $users = $conn->query("
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="admin.css"> <!-- Zorg ervoor dat dit pad correct is -->
+    <link rel="stylesheet" href="admin.css"> 
+    <link rel="stylesheet" href="user.css"> 
 </head>
-<body>
+<body class="<?= $_SESSION['dark_mode'] == 1 ? 'dark-mode' : ''; ?>">
 <div class="admin-container">
     <h1>Admin Dashboard</h1>
 
@@ -137,6 +148,7 @@ $users = $conn->query("
             <tr>
                 <th>Gebruiker</th>
                 <th>Inhoud</th>
+                <th>Afbeelding</th>
                 <th>Datum</th>
                 <th>Acties</th>
             </tr>
@@ -146,6 +158,11 @@ $users = $conn->query("
                 <tr>
                     <td><?= htmlspecialchars($tweet['username']); ?></td>
                     <td><?= htmlspecialchars($tweet['content']); ?></td>
+                    <td>
+                        <?php if (!empty($tweet['image'])): ?>
+                            <img src="<?= htmlspecialchars($tweet['image']); ?>" alt="Tweet image" style="max-width: 100px; max-height: 100px;">
+                        <?php endif; ?>
+                    </td>
                     <td><?= htmlspecialchars($tweet['created_at']); ?></td>
                     <td>
                         <form action="admin.php" method="POST" style="display:inline;">

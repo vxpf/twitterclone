@@ -239,7 +239,6 @@ textarea {
 
 /* Tweet-knop */
 .post-btn {
-  display: inline-block;
   padding: 10px 20px;
   font-size: 14px;
   background-color: #1da1f2;
@@ -614,3 +613,259 @@ textarea {
   color: #1da1f2; /* Twitter blauw */
   font-weight: bold;
 }
+
+/* --- Dark Mode Styles --- */
+body.dark-mode {
+  background-color: #1a202c; /* Donkergrijze/blauwe achtergrond */
+  color: #e2e8f0; /* Lichte tekstkleur */
+}
+
+body.dark-mode .twitter-container {
+  background-color: #2d3748; /* Iets lichtere container achtergrond */
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5); /* Donkerdere schaduw */
+}
+
+/* Sidebar Dark */
+body.dark-mode .sidebar {
+  background-color: #2d3748;
+  border-right: 1px solid #4a5568; /* Donkerdere border */
+}
+
+body.dark-mode .logo h2 {
+  color: #63b3ed; /* Behoud blauw of maak lichter */
+}
+
+body.dark-mode .nav-item {
+  color: #e2e8f0;
+}
+
+body.dark-mode .nav-item:hover {
+  background-color: #4a5568; /* Donkerdere hover */
+  color: #ffffff;
+}
+
+body.dark-mode .nav-item.active {
+  background-color: #3182ce; /* Actief blauw */
+  color: white;
+}
+
+body.dark-mode .tweet-btn {
+  background-color: #3182ce;
+}
+
+body.dark-mode .tweet-btn:hover {
+  background-color: #2b6cb0;
+}
+
+/* Feed Dark */
+body.dark-mode .feed {
+  background-color: #1a202c; /* Match body background */
+  margin-left: 310px; /* Ensure margin is reapplied if overridden */
+}
+
+body.dark-mode .feed-header {
+  background-color: #2d3748; /* Match sidebar/container bg */
+  border-bottom: 2px solid #4a5568;
+}
+
+body.dark-mode .feed-header h1 {
+  color: #e2e8f0;
+}
+
+/* Search Dark */
+body.dark-mode .search-bar input {
+  background-color: #2d3748;
+  border: 1px solid #4a5568;
+  color: #e2e8f0;
+}
+
+body.dark-mode .search-bar input:focus {
+  border-color: #63b3ed;
+}
+
+body.dark-mode .search-bar button {
+  background-color: #3182ce;
+}
+
+body.dark-mode .search-bar button:hover {
+  background-color: #2b6cb0;
+}
+
+body.dark-mode .search-result {
+  border-bottom: 1px solid #4a5568;
+}
+
+body.dark-mode .search-result span {
+  color: #e2e8f0;
+}
+
+/* Tweet Box Dark */
+body.dark-mode .tweet-box {
+  background-color: #2d3748;
+  border: 1px solid #4a5568;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+body.dark-mode textarea {
+  background-color: #1a202c;
+  border: 1px solid #4a5568;
+  color: #e2e8f0;
+}
+
+body.dark-mode .file-label,
+body.dark-mode .post-btn {
+  background-color: #3182ce;
+}
+
+body.dark-mode .file-label:hover,
+body.dark-mode .post-btn:hover {
+  background-color: #2b6cb0;
+}
+
+/* Tweets Dark */
+body.dark-mode .tweet {
+  background-color: #2d3748;
+  border: 1px solid #4a5568;
+}
+
+body.dark-mode .tweet-header strong,
+body.dark-mode .tweet-header span {
+  color: #e2e8f0;
+}
+
+body.dark-mode .tweet-content p {
+  color: #cbd5e0; /* Iets minder fel dan header text */
+}
+
+body.dark-mode .tweet-image img {
+  border: 1px solid #4a5568;
+}
+
+body.dark-mode .tweet-actions button {
+  color: #a0aec0; /* Lichtere grijze iconen */
+}
+
+body.dark-mode .tweet-actions button:hover,
+body.dark-mode .like-btn:hover,
+body.dark-mode .retweet-btn:hover {
+  color: #63b3ed; /* Blauwe hover */
+}
+
+body.dark-mode .action-count {
+  color: #a0aec0;
+}
+
+body.dark-mode .like-btn.active {
+  color: #f56565; /* Rood voor like */
+}
+
+body.dark-mode .retweet-btn.active {
+  color: #48bb78; /* Groen voor retweet */
+}
+
+body.dark-mode .delete-btn {
+  color: #f56565; /* Rood voor delete */
+}
+
+body.dark-mode .delete-btn:hover {
+  color: #c53030; /* Donkerder rood */
+}
+
+/* Comments Dark */
+body.dark-mode .comments {
+  border-top: 1px solid #4a5568;
+}
+
+body.dark-mode .comment {
+  border-top: 1px solid #4a5568;
+}
+
+body.dark-mode .comment strong {
+  color: #e2e8f0;
+}
+
+body.dark-mode .comment p {
+  color: #cbd5e0;
+}
+
+body.dark-mode .comment small {
+  color: #a0aec0;
+}
+
+body.dark-mode .comment-form textarea {
+  background-color: #1a202c;
+  border: 1px solid #4a5568;
+  color: #e2e8f0;
+}
+
+body.dark-mode .comment-form button {
+  background-color: #3182ce;
+}
+
+body.dark-mode .comment-form button:hover {
+  background-color: #2b6cb0;
+}
+
+/* Profile Edit Form Dark (Assuming similar structure in user.css / profile.css) */
+body.dark-mode .profile-edit-form {
+  background-color: #2d3748;
+  border: 1px solid #4a5568;
+}
+
+body.dark-mode .profile-edit-form h2 {
+  color: #e2e8f0;
+}
+
+body.dark-mode .form-group label {
+  color: #cbd5e0;
+}
+
+body.dark-mode .form-group input[type="text"],
+body.dark-mode .form-group input[type="email"],
+body.dark-mode .form-group input[type="password"],
+body.dark-mode .form-group textarea {
+  background-color: #1a202c;
+  border: 1px solid #4a5568;
+  color: #e2e8f0;
+}
+
+body.dark-mode .save-profile-btn {
+  background-color: #3182ce;
+}
+
+body.dark-mode .save-profile-btn:hover {
+  background-color: #2b6cb0;
+}
+
+body.dark-mode .cancel-edit-btn {
+  background-color: #4a5568;
+  color: #e2e8f0;
+}
+
+body.dark-mode .cancel-edit-btn:hover {
+  background-color: #718096;
+}
+
+/* Profile View Specific (if applicable in user.css) */
+body.dark-mode .profile-banner-container {
+    background-color: #2d3748;
+}
+
+body.dark-mode .profile-picture {
+    border: 5px solid #1a202c; /* Match body background */
+    background-color: #4a5568;
+}
+
+body.dark-mode .profile-name {
+    color: #e2e8f0;
+}
+
+body.dark-mode .profile-handle {
+    color: #a0aec0;
+}
+
+body.dark-mode .profile-bio {
+    color: #cbd5e0;
+}
+
+/* --- End Dark Mode Styles --- */

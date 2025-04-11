@@ -6,6 +6,13 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
+// Initialize dark mode session variable if not set
+if (!isset($_SESSION['dark_mode'])) {
+    // Optionally, fetch from DB here if you want the initial value to reflect DB on first load after login
+    // For simplicity, we default to 0 (light mode) if not in session yet.
+    $_SESSION['dark_mode'] = 0;
+}
+
 // Database connection
 try {
     $conn = new PDO(
@@ -114,7 +121,7 @@ function tijdVerstreken($timestamp) {
         }
     </script>
 </head>
-<body>
+<body class="<?= $_SESSION['dark_mode'] == 1 ? 'dark-mode' : ''; ?>">
 <div class="twitter-container">
 
 
@@ -141,7 +148,7 @@ function tijdVerstreken($timestamp) {
                 <textarea name="content" placeholder="What's happening?" rows="4" required></textarea>
                 
                 
-                <input type="file" id="file-upload" name="file" style="display: none;">
+                <input type="file" id="file-upload" name="image" style="display: none;">
                 <label for="file-upload" class="file-label">Choose File</label>
 
                 <button type="submit" class="post-btn">Tweet</button>
