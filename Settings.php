@@ -30,10 +30,6 @@ if (!isset($_SESSION['banner'])) {
     $_SESSION['banner'] = 'path/to/default-banner.png'; // Plaats hier het pad naar een standaardbanner
 }
 
-if (!isset($_SESSION['dark_mode'])) {
-    $_SESSION['dark_mode'] = 0; // Standaard dark mode uit
-}
-
 // Als het formulier verzonden wordt
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Gegevens uit het formulier ophalen en saniteren
@@ -42,7 +38,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $bio = htmlspecialchars(trim($_POST['bio']));
     $old_password_input = !empty($_POST['old_password']) ? $_POST['old_password'] : null;
     $new_password_input = !empty($_POST['password']) ? $_POST['password'] : null;
-    $dark_mode = isset($_POST['dark_mode']) ? 1 : 0; // Read dark mode checkbox value
     $password_update_params = null; // To store password update details if valid
     $password_error = null; // To store any password-related errors
 
@@ -101,14 +96,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Only proceed with DB update if there wasn't a password error
         if ($password_error === null) {
             // Bouw de `UPDATE`-query op
-            $query = "UPDATE users SET name = :name, email = :email, bio = :bio, profile_picture = :profile_picture, banner = :banner, dark_mode = :dark_mode";
+            $query = "UPDATE users SET name = :name, email = :email, bio = :bio, profile_picture = :profile_picture, banner = :banner";
             $params = [
                 ':name' => $name,
                 ':email' => $email,
                 ':bio' => $bio,
                 ':profile_picture' => $profilePicture,
                 ':banner' => $banner,
-                ':dark_mode' => $dark_mode,
                 ':user_id' => $user_id
             ];
 
@@ -129,7 +123,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['bio'] = $bio;
             $_SESSION['profile_picture'] = $profilePicture;
             $_SESSION['banner'] = $banner;
-            $_SESSION['dark_mode'] = $dark_mode;
 
             // Succesbericht
             $message = "Je instellingen zijn met succes opgeslagen!";
@@ -146,7 +139,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 // Haal de huidige gegevens van de gebruiker op
-$stmt = $conn->prepare("SELECT name, email, bio, profile_picture, banner, dark_mode FROM users WHERE id = :user_id");
+$stmt = $conn->prepare("SELECT name, email, bio, profile_picture, banner FROM users WHERE id = :user_id");
 $stmt->execute([':user_id' => $user_id]);
 $user = $stmt->fetch();
 
@@ -183,43 +176,9 @@ if (!$user) {
         .file-label {
             color: white; /* Change text color to white */
         }
-
-        /* Dark mode styles */
-        body.dark-mode {
-            background-color: #333;
-            color: #fff;
-        }
-
-        body.dark-mode .sidebar {
-            background-color: #444;
-        }
-
-        body.dark-mode .sidebar-nav a {
-            color: #fff;
-        }
-
-        body.dark-mode .feed-header {
-            background-color: #444;
-        }
-
-        body.dark-mode .profile-edit-form {
-            background-color: #444;
-        }
-
-        body.dark-mode .form-group label {
-            color: #fff;
-        }
-
-        body.dark-mode .save-profile-btn {
-            background-color: #555;
-        }
-
-        body.dark-mode .cancel-edit-btn {
-            background-color: #555;
-        }
     </style>
 </head>
-<body class="<?= $_SESSION['dark_mode'] == 1 ? 'dark-mode' : ''; ?>">
+<body>
 <div class="twitter-container">
     <aside class="sidebar">
         <div class="logo">
@@ -279,12 +238,6 @@ if (!$user) {
                         <img src="<?= htmlspecialchars($user['banner']); ?>" alt="Banner" style="width: 100%; max-width: 300px;">
                     <?php endif; ?>
                 </div>
-                <!-- Dark Mode Toggle -->
-                <div class="form-group">
-                    <label for="dark_mode">Dark Mode</label>
-                    <input type="checkbox" id="dark_mode" name="dark_mode" value="1" <?= ($user['dark_mode'] ?? 0) == 1 ? 'checked' : ''; ?>>
-                </div>
-                <!-- End Dark Mode Toggle -->
                 <button type="submit" class="save-profile-btn">Opslaan</button>
                 <button type="button" class="cancel-edit-btn" onclick="window.location.href='user.php';">Annuleren</button>
             </form>

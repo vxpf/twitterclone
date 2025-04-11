@@ -6,11 +6,6 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-// Initialize dark mode session variable if not set
-if (!isset($_SESSION['dark_mode'])) {
-    $_SESSION['dark_mode'] = 0;
-}
-
 // Database koppeling
 try {
     $conn = new PDO("mysql:host=localhost;dbname=login_system", "root", "", [
@@ -74,7 +69,7 @@ function tijdVerstreken($timestamp) {
     <link rel="stylesheet" href="user.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 </head>
-<body class="<?= $_SESSION['dark_mode'] == 1 ? 'dark-mode' : ''; ?>">
+<body>
 <div class="twitter-container">
 
     <!-- Sidebar -->

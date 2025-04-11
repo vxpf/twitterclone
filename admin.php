@@ -7,11 +7,6 @@ if (!isset($_SESSION['user_id']) || !isset($_SESSION['is_admin']) || !$_SESSION[
     exit();
 }
 
-// Initialize dark mode session variable if not set
-if (!isset($_SESSION['dark_mode'])) {
-    $_SESSION['dark_mode'] = 0; // Default to light mode for admin if not set via user settings
-}
-
 // Database connection
 try {
     $conn = new PDO(
@@ -132,9 +127,8 @@ $users = $conn->query("
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
     <link rel="stylesheet" href="admin.css"> 
-    <link rel="stylesheet" href="user.css"> 
 </head>
-<body class="<?= $_SESSION['dark_mode'] == 1 ? 'dark-mode' : ''; ?>">
+<body>
 <div class="admin-container">
     <h1>Admin Dashboard</h1>
 
