@@ -5,10 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e1342e43-099d-4e5b-a0cb-a8458f3679ad" name="Changes" comment="Fa fonts gevoegd bij mijn tweet sectie, begonnen aan het werken van mijn admin pagina, comments functie plaatsen en hetk unnen verwijderen en opslaan ja en paar styling fixen">
-      <change beforePath="$PROJECT_DIR$/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/index.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/index.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user.css" beforeDir="false" afterPath="$PROJECT_DIR$/user.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user.php" beforeDir="false" afterPath="$PROJECT_DIR$/user.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/post_tweet.php" beforeDir="false" afterPath="$PROJECT_DIR$/post_tweet.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -106,6 +105,7 @@
       <workItem from="1743465771694" duration="11000" />
       <workItem from="1743491279944" duration="26000" />
       <workItem from="1743681411206" duration="277000" />
+      <workItem from="1744363264330" duration="3543000" />
     </task>
     <task id="LOCAL-00001" summary="Nieuw">
       <option name="closed" value="true" />
